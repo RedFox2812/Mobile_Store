@@ -1,0 +1,11 @@
+:root {
+  --main-color: #4f6bff;
+  --hover-color: #e9edff;
+  --text-color: #ccc;
+  --red-color: #fc6565;
+  --green-color: #94e9b5;
+  --gray-color: #e9e9e8;
+}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
