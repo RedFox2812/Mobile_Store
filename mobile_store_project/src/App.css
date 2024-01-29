@@ -1,6 +1,39 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  background-color: var(--bg-color);
+}
+body {
+  background-color: var(--bg-color);
+}
+.selected {
+  color: var(--text-color);
+}
+.selected::after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--main-color);
+  animation: showborder 0.25s;
+}
+@keyframes showborder {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.button-icon {
+  opacity: 0.3;
+}
+.button-icon:hover {
+  opacity: 1;
+}
+.selected-icon {
+  opacity: 1;
+  pointer-events: none;
 }

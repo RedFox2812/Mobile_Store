@@ -1,9 +1,18 @@
+/* eslint-disable no-unused-vars */
 import "./App.css";
+import AdminPage from "./component/admin_components/AdminPage";
+import Button from "./component/elements_component/Button";
+import ButtonExtra from "./component/elements_component/ButtonExtra";
+import HoverText from "./component/elements_component/HoverText";
+import Toggle from "./component/elements_component/toggle";
 
 function App() {
+  const consoleLog = (e) => {
+    console.log(e.target);
+  };
   return (
     <>
-      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+      <AdminPage></AdminPage>
     </>
   );
 }
