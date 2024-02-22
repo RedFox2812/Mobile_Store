@@ -15,9 +15,10 @@ const DropdownStyled = styled.div`
       position: absolute;
       content: "";
       width: 100%;
-      height: 10px;
+      height: 20px;
       bottom: -50%;
       left: 0;
+      z-index: 49;
       background-color: transparent;
     }
     .container-child {
@@ -31,18 +32,22 @@ const DropdownStyled = styled.div`
     .list {
       position: absolute;
       width: 100%;
+      /* height: 0%; */
       left: 0;
       top: 40px;
       background-color: var(#fff);
       color: var(--gray-color);
       cursor: default;
       padding: 4px 0px;
-      transform: translateY(-50%);
+      transform: translateY(-100%);
       opacity: 0;
       transition: all 0.15s ease-in;
       .item {
+        cursor: pointer;
+        height: 0%;
         padding: 10px 0;
         &:hover {
+          height: auto;
           background-color: var(--list-color);
         }
       }
@@ -58,6 +63,7 @@ const DropdownStyled = styled.div`
     .list {
       color: var(--text-color);
       opacity: 1;
+      /* height: 100%; */
       transform: translateY(0%);
     }
     .img {

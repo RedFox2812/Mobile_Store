@@ -63,7 +63,7 @@ const AdminPage = () => {
 const HeaderAdmin = (props) => {
   const items = ["User", "Product", "Voucher"];
   return (
-    <div className="container-header">
+    <div className="container-header fixed h-[100px] w-full z-50">
       <div className="w-full h-auto flex  justify-between bg-[#fff] rounded-t-md">
         <div className=" left-bar h-full flex items-center ">
           <p className=" h-full p-[16px]  mr-[100px] text-text-clo text-[24px] font-medium cursor-default ">
@@ -343,25 +343,25 @@ const UserManager = () => {
   };
   return (
     <div>
-      <div className="search-filter w-full h-[55px] mt-[6px] flex justify-around items-center bg-[#fff] ">
+      <div className="search-filter fixed w-full h-[55px] top-[70px] flex justify-around items-center bg-[#fff] z-40">
         <div className="search flex-[calc(8/9)]">
-          <div className="w-[99%] p-1 m-3  flex justify-between border border-main-clo text-center items-center rounded-full">
+          <div className="w-[99%] p-1 m-auto  flex justify-between border border-main-clo text-center items-center rounded-full">
             <img
               className="w-[16px] h-[16px] mx-[20px]"
               src="src\assets\icon\search_icon.png"
               alt=""
             />
             <div
-              className="w-full flex justify-between text-[18px] font-medium  border-l-2 border-l-main-clo"
+              className="w-full flex justify-between text-[18px] font-medium border-l-2 border-l-main-clo"
               onClick={(e) => {
                 e.target.value = "";
               }}
             >
               <input
                 className="w-full pl-3 outline-none text-gray-clo"
-                value={"Input your text..."}
+                defaultValue={"Input your text..."}
               />
-              <Button text="Search" className="px-[10px] "></Button>
+              <Button text="Search" className="px-[10px]"></Button>
             </div>
           </div>
         </div>
@@ -372,7 +372,7 @@ const UserManager = () => {
       </div>
       <div className="flex">
         <div
-          className={`left-board flex-[calc(7/8)] h-[934px] mt-[6px] gap-1 bg-[#fff] overflow-y-scroll `}
+          className={`board w-full mt-[65px] gap-1 bg-[#fff] overflow-y-scroll `}
         >
           <div>
             <UserInfo
@@ -395,17 +395,10 @@ const UserManager = () => {
             })}
           </div>
         </div>
-        <div className="right-board flex-[calc(1/8)]"></div>
       </div>
     </div>
   );
 };
-// - Người dùng
-//     - MAND
-//     - NameND
-//     - SDT
-//     - Address
-//     - Email
 const UserInfo = (props) => {
   return (
     <div className={props.className}>
@@ -425,11 +418,58 @@ const UserInfo = (props) => {
         {props.col.address}
       </div>
       <div className="flex-[calc(4/17)] ">{props.col.email}</div>
+      <div className="detele-user">
+        <div className="delete-btn">
+          <ButtonExtra
+            srcIcon={"src/assets/icon/recycle_bin_icon.png"}
+            className="delete button-icon relative select-item"
+            size="26"
+          ></ButtonExtra>
+        </div>
+      </div>
     </div>
   );
 };
-const ProductManager = (props) => {};
+const ProductManager = (props) => {
+  return (
+    <>
+      <div className="search-filter fixed w-full h-[55px] top-[70px] flex justify-around items-center bg-[#fff] z-40">
+        <div className="search flex-[calc(8/9)]">
+          <div className="w-[99%] p-1 m-auto  flex justify-between border border-main-clo text-center items-center rounded-full">
+            <img
+              className="w-[16px] h-[16px] mx-[20px]"
+              src="src\assets\icon\search_icon.png"
+              alt=""
+            />
+            <div
+              className="w-full flex justify-between text-[18px] font-medium border-l-2 border-l-main-clo"
+              onClick={(e) => {
+                e.target.value = "";
+              }}
+            >
+              <input
+                className="w-full pl-3 outline-none text-gray-clo"
+                defaultValue={"Input your text..."}
+              />
+              <Button text="Search" className="px-[10px]"></Button>
+            </div>
+          </div>
+        </div>
+        <div className="flex gap-3 flex-[calc(1/9)] justify-center">
+          <ButtonExtra
+            srcIcon={"src/assets/icon/filter_icon.png"}
+            text="Filter"
+            size="24"
+            className="filter button-filter relative py-[4px] border-1 border-gray-clo opacity-50 hover:opacity-[1]"
+          ></ButtonExtra>
+        </div>
+      </div>
+    </>
+  );
+};
 const VoucherManager = (props) => {};
 const Setting = (props) => {};
 const Noti = (props) => {};
+const Filter = (props) => {};
+
 export default AdminPage;

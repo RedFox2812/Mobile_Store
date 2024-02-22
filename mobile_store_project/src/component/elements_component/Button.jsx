@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 const ButtonStyle = styled.button`
   display: block;
-  margin: auto 0;
   align-items: center;
   color: #fff;
   background-color: var(--main-color);
