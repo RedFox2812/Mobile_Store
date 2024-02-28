@@ -1,8 +1,8 @@
+/* eslint-disable no-const-assign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-undef */
 // import React from "react";
-
 import { useEffect, useState } from "react";
 import ButtonExtra from "../elements_component/ButtonExtra";
 import Button from "../elements_component/Button";
@@ -18,7 +18,28 @@ const AdminPage = () => {
     selected ? selected.classList.remove(str) : e.target.classList.add(str);
     e.target.classList.add(str);
   }
+  const [input, setInput] = useState("getUserList");
+  const [data, setData] = useState("");
+  const fetchData = async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/execute_python_function?input=${input}`
+      );
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const response = await res.json();
+      setData(response);
+    } catch {
+      console.log.error(
+        " There was a problem with the fetch operation:",
+        error
+      );
+    }
+  };
+
   useEffect(() => {
+    const intervalId = setInterval(fetchData, 3000);
     window.addEventListener("click", (e) => {
       if (e.target.classList.contains("select-item")) {
         handleToggleClass(e, "selected");
@@ -28,8 +49,10 @@ const AdminPage = () => {
         handleToggleClass(e, "selected-icon");
       }
       if (e.target.classList.contains("User")) {
+        setInput("getUserList");
         setShow("user");
       } else if (e.target.classList.contains("Product")) {
+        setInput("getProductList");
         setShow("product");
       } else if (e.target.classList.contains("Voucher")) {
         setShow("voucher");
@@ -39,13 +62,14 @@ const AdminPage = () => {
         setShow("");
       }
     });
-  }, [show]);
-
+    return () => clearInterval(intervalId);
+  }, [show, input]);
+  console.log(data["result"]);
   return (
     <div className="Admin-page w-full ">
       <HeaderAdmin icon={arrayIcon}></HeaderAdmin>
       {show == "user" ? (
-        <UserManager></UserManager>
+        <UserManager data={data}></UserManager>
       ) : show == "product" ? (
         <ProductManager></ProductManager>
       ) : show == "voucher" ? (
@@ -103,244 +127,20 @@ const HeaderAdmin = (props) => {
     </div>
   );
 };
-const UserManager = () => {
+const UserManager = (props) => {
+  // console.log(props.usersData);
+  const data = props.data ? props.data["result"] : "";
+  const dataJson = data ? JSON.parse(data) : "";
   let num = 0;
   const arrayCol = {
     SNo: "S.No",
-    id: "ID",
+    _id: "ID",
     name: "Name",
     phone: "Number Phone",
     address: "Address",
     email: "Email",
   };
-  const usersdata = {
-    items: [
-      {
-        id: "AAAAAA",
-        name: "Pham Duy",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "alan.hany123@gmail.com",
-      },
-      {
-        id: "BBBBBB",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "CCCCCC",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "DDDDDD",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "EEEEEE",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "FFFFFF",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "GGGGGG",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "JJJJJJ",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "AAAAAA",
-        name: "Pham Duy",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "alan.hany123@gmail.com",
-      },
-      {
-        id: "BBBBBB",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "CCCCCC",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "DDDDDD",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "EEEEEE",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "FFFFFF",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "GGGGGG",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "JJJJJJ",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "AAAAAA",
-        name: "Pham Duy",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "alan.hany123@gmail.com",
-      },
-      {
-        id: "BBBBBB",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "CCCCCC",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "DDDDDD",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "EEEEEE",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "FFFFFF",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "GGGGGG",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "JJJJJJ",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "AAAAAA",
-        name: "Pham Duy",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "alan.hany123@gmail.com",
-      },
-      {
-        id: "BBBBBB",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "CCCCCC",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "DDDDDD",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "EEEEEE",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "FFFFFF",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "GGGGGG",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-      {
-        id: "JJJJJJ",
-        name: "Hai Duong",
-        phone: "0705211874",
-        address: "Can Tho",
-        email: "lehaiduong123@gmail.com",
-      },
-    ],
-  };
+
   return (
     <div>
       <div className="search-filter fixed w-full h-[55px] top-[70px] flex justify-around items-center bg-[#fff] z-40">
@@ -376,23 +176,29 @@ const UserManager = () => {
         >
           <div>
             <UserInfo
-              className="text-left w-full flex mt-[-2px] px-7 py-4 gap-2 border-t-[4px] border-b-[4px] bg-[#fff] text-[16px] font-medium text-gray-clo border-backgruond-clo"
+              className="text-left w-full flex mt-[60px] px-7 py-4 gap-2 border-t-[4px] border-b-[4px] bg-[#fff] text-[16px] font-medium text-gray-clo border-backgruond-clo"
               col={arrayCol}
               SNo={arrayCol.SNo}
+              delete="none"
             ></UserInfo>
-            {usersdata.items.map((item) => {
-              num = num + 1;
-              return (
-                <UserInfo
-                  key={num}
-                  col={item}
-                  SNo={num}
-                  className={`${
-                    num % 2 == 0 ? "" : "bg-list-clo"
-                  } text-left w-full flex px-7 py-4 gap-2 text-[16px] font-medium my-[2px] text-text-clo border-b-[4px] border-backgruond-clo`}
-                ></UserInfo>
-              );
-            })}
+            {dataJson ? (
+              dataJson.map((item) => {
+                // console.log(item);
+                num = num + 1;
+                return (
+                  <UserInfo
+                    key={item._id}
+                    col={item}
+                    SNo={num}
+                    className={`${
+                      num % 2 == 0 ? "" : "bg-list-clo"
+                    } text-left w-full flex px-7 py-4 gap-2 text-[16px] font-medium my-[2px] text-text-clo border-b-[4px] border-backgruond-clo`}
+                  ></UserInfo>
+                );
+              })
+            ) : (
+              <div className="loading mx-auto my-3 w-[35px] h-[35px] border-[6px] border-main-clo border-r-[transparent] rounded-full bg-hover-clo"></div>
+            )}
           </div>
         </div>
       </div>
@@ -405,10 +211,10 @@ const UserInfo = (props) => {
       <div className="flex-[calc(1/17)] border-r-[2px] border-r-gray-clo">
         {props.SNo}
       </div>
-      <div className="flex-[calc(2/17)] border-r-[2px] border-r-gray-clo">
-        {props.col.id}
+      <div className="flex-[calc(2/17)] border-r-[2px] border-r-gray-clo pr-2 max-w-[100px] overflow-hidden">
+        {props.col._id.substring(0, 8)}
       </div>
-      <div className="flex-[calc(3/17)] border-r-[2px] border-r-gray-clo">
+      <div className="flex-[calc(2/17)] border-r-[2px] border-r-gray-clo">
         {props.col.name}
       </div>
       <div className="flex-[calc(3/17)] border-r-[2px] border-r-gray-clo">
@@ -418,14 +224,18 @@ const UserInfo = (props) => {
         {props.col.address}
       </div>
       <div className="flex-[calc(4/17)] ">{props.col.email}</div>
-      <div className="detele-user">
-        <div className="delete-btn">
-          <ButtonExtra
-            srcIcon={"src/assets/icon/recycle_bin_icon.png"}
-            className="delete button-icon relative select-item"
-            size="26"
-          ></ButtonExtra>
-        </div>
+      <div className="detele-user flex-[calc(1/17)]">
+        {props.delete == "none" ? (
+          <div className="delete button-icon relative w-[26px]"></div>
+        ) : (
+          <div className="delete-btn">
+            <ButtonExtra
+              srcIcon={"src/assets/icon/recycle_bin_icon.png"}
+              className="delete button-icon relative select-item"
+              size="26"
+            ></ButtonExtra>
+          </div>
+        )}
       </div>
     </div>
   );

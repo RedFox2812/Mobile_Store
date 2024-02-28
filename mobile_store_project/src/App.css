@@ -37,3 +37,21 @@ body {
   opacity: 1;
   pointer-events: none;
 }
+.loading {
+  animation: spin 1s linear infinite;
+  /* transition: all 0.25 ease-in; */
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
