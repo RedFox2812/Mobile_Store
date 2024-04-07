@@ -4,9 +4,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 const ButtonExtraStyle = styled.a`
-  display: block;
   height: 100%;
-  display: flex;
   align-items: center;
   border-radius: 25px;
   color: var(--text-color);

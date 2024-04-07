@@ -4,9 +4,9 @@
 /* eslint-disable no-undef */
 // import React from "react";
 import { useEffect, useState } from "react";
-import ButtonExtra from "../elements_component/ButtonExtra";
-import Button from "../elements_component/Button";
-import Dropdown from "../elements_component/Dropdown";
+import ButtonExtra from "../elements/ButtonExtra";
+import Button from "../elements/Button";
+import Dropdown from "../elements/Dropdown";
 const AdminPage = () => {
   const arrayIcon = {
     setting: "src/assets/icon/setting_hover_icon.png",
@@ -111,13 +111,13 @@ const HeaderAdmin = (props) => {
         <div className="right-bar flex gap-3 px-[16px] items-center">
           <ButtonExtra
             srcIcon={props.icon.bell}
-            className="noti button-icon relative select-item"
+            className="noti button-icon relative flex select-item"
             size="24"
           ></ButtonExtra>
           <ButtonExtra
             srcIcon={props.icon.setting}
             size="24"
-            className="setting button-icon relative select-item"
+            className="setting button-icon relative flex select-item"
           ></ButtonExtra>
           <div className="w-[40px] border border-main-clo rounded-full p-2 cursor-pointer">
             <img src="src\assets\avata.png" alt="" />

@@ -1,10 +1,17 @@
 #root {
-  margin: 0 auto;
+  margin: 0;
   text-align: center;
-  background-color: var(--bg-color);
+  background-color: white;
+  height: 100%;
+  width: 100%;
 }
 body {
-  background-color: var(--bg-color);
+  width: 100%;
+}
+body,
+html {
+  background-color: white;
+  height: 100%;
 }
 .selected {
   color: var(--text-color);
@@ -54,4 +61,206 @@ body {
     transform: rotate(360deg);
     opacity: 1;
   }
+}
+.container {
+  display: flex;
+}
+.brand-item {
+  cursor: pointer;
+}
+.brand-item:hover p {
+  opacity: 1;
+}
+.brand-item p.active {
+  opacity: 100%;
+  padding-left: 50px;
+}
+body {
+  font-size: 18px;
+}
+p {
+  font-weight: 500;
+}
+span {
+  font-weight: 500;
+}
+.container .container--left {
+  border-right: 10px solid var(--main-color);
+  padding: 4px 10px;
+  position: relative;
+}
+.container .container--left .container--left__extra {
+  font-size: 22px;
+  font-weight: 600;
+  color: #fff;
+  height: 40px;
+  width: 20px;
+  position: absolute;
+  right: 0px;
+  transform: translateX(26px);
+  top: 45%;
+  border-radius: 0 4px 10px 0;
+  background-color: var(--main-color);
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+.container .container--left .container--left__extra:hover {
+  padding-left: 4px;
+  width: 36px;
+  transform: translateX(36px);
+  opacity: 0.9;
+}
+.container .container--left .container-filter {
+  display: flex;
+  gap: 20px;
+}
+.container .container--left .container-filter .filter {
+  flex: calc(1 / 2);
+  min-width: 200px;
+}
+
+.logo-home {
+  font-size: 24px;
+  font-weight: 600;
+  padding: 4px 0;
+}
+.container .container--right {
+  flex: calc(3 / 12);
+}
+.container .container--center {
+  flex: calc(7 / 12);
+  border-left: 8px solid var(--bg-color);
+}
+.container-filter {
+  display: flex;
+  align-items: top;
+  justify-content: center;
+}
+.brands-list {
+  background-color: var(--list-color);
+  display: flex;
+  /* width: 100%; */
+  padding-top: 8px;
+  gap: 4px;
+  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
+  margin-top: 8px;
+}
+.brand-item {
+  flex: 1;
+  display: flex;
+  text-align: left;
+  align-items: center;
+}
+.brand-item img {
+  height: 38px;
+  width: 38px;
+  background-size: cover;
+  border-radius: 3px;
+}
+.brand-item p {
+  padding: 4px 10px;
+  opacity: 70%;
+  transition: all 0.1s linear;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+  border-radius: 0px 2px 2px 0px;
+}
+.list-checkbox {
+  max-width: 220px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 4px;
+}
+.list-checkbox-type {
+  gap: 4px;
+  margin-top: 10px;
+  display: grid;
+}
+.list-checkbox-type .checkbox-item {
+  flex: 1;
+}
+.list-checkbox .checkbox-item {
+  display: flex;
+  width: 100%;
+}
+.button-filter {
+  padding: 0.5rem;
+  margin-top: 4px;
+  width: 100%;
+  font-weight: 500;
+}
+.filter-hidden {
+  display: block;
+  min-width: 0px;
+  animation: hiddenFilter 0.1s linear;
+  transition: all 0.1s linear;
+  margin-left: -18px;
+}
+.filter-show {
+  margin-top: 20px;
+  border-left: 2px solid var(--bg-color);
+  background-color: transparent;
+  min-width: 220px;
+  display: block;
+  animation: showFilter 0.1s ease-in;
+  transition: all 0.1s linear;
+}
+@keyframes showFilter {
+  0% {
+    width: 0;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    min-width: 220px;
+    transform: translateX(0%);
+  }
+}
+@keyframes hiddenFilter {
+  0% {
+    opacity: 1;
+    min-width: 220px;
+    transform: translateX(0%);
+  }
+  100% {
+    min-width: 0px;
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+}
+.checkbox-item button {
+  font-weight: 400;
+  padding: 2px 0px;
+  margin: 2px 0;
+  width: 100%;
+  border: 1px solid var(--bg-color);
+  border-radius: 4px;
+  cursor: default;
+}
+.checkbox-item button:hover {
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+}
+.checkbox-item button.active {
+  border: 1px solid var(--main-color);
+  color: var(--main-color);
+}
+.filter-extra.filter-extra-show {
+  display: block;
+  padding: 0 10px;
+  width: 100%;
+  overflow: hidden;
+  transition: all 0.2s ease-out;
+  opacity: 1;
+}
+.filter-extra.filter-extra-hidden {
+  display: none;
+  min-width: 0%;
+  padding: 0px;
+  width: 0%;
+  overflow: hidden;
+  opacity: 0;
 }
