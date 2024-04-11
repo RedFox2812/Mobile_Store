@@ -5,10 +5,11 @@ const FilterExtra = (props) => {
   const handleClick = (e) => {
     e.target.classList.toggle("active");
   };
+  const show = true;
   return (
     <div
       className={`${
-        props.show ? "filter-extra-show" : "filter-extra-hidden "
+        props.show ? "filter-show" : "filter-hidden "
       } filter-extra`}
     >
       <div className="text-left text-[16px] font-semibold my-[4px]">

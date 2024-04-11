@@ -10,6 +10,7 @@ body {
 }
 body,
 html {
+  width: 100%;
   background-color: white;
   height: 100%;
 }
@@ -48,20 +49,7 @@ html {
   animation: spin 1s linear infinite;
   /* transition: all 0.25 ease-in; */
 }
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-    opacity: 0;
-  }
-  50% {
-    transform: rotate(180deg);
-    opacity: 0.5;
-  }
-  100% {
-    transform: rotate(360deg);
-    opacity: 1;
-  }
-}
+
 .container {
   display: flex;
 }
@@ -84,12 +72,14 @@ p {
 span {
   font-weight: 500;
 }
-.container .container--left {
+.container--left {
   border-right: 10px solid var(--main-color);
   padding: 4px 10px;
   position: relative;
+  height: 100%;
+  left: 0;
 }
-.container .container--left .container--left__extra {
+.container--left .container--left__extra {
   font-size: 22px;
   font-weight: 600;
   color: #fff;
@@ -104,19 +94,21 @@ span {
   transition: all 0.2s ease;
   cursor: pointer;
 }
-.container .container--left .container--left__extra:hover {
+.container--left .container--left__extra:hover {
   padding-left: 4px;
   width: 36px;
   transform: translateX(36px);
   opacity: 0.9;
 }
-.container .container--left .container-filter {
+.container--left .container-filter {
   display: flex;
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-.container .container--left .container-filter .filter {
-  flex: calc(1 / 2);
+.container--left .container-filter .filter {
   min-width: 200px;
+  display: flex;
 }
 
 .logo-home {
@@ -124,17 +116,16 @@ span {
   font-weight: 600;
   padding: 4px 0;
 }
-.container .container--right {
-  flex: calc(3 / 12);
-}
-.container .container--center {
-  flex: calc(7 / 12);
+.container--main {
   border-left: 8px solid var(--bg-color);
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  flex: 1;
+  padding: 20px;
 }
 .container-filter {
   display: flex;
-  align-items: top;
-  justify-content: center;
 }
 .brands-list {
   background-color: var(--list-color);
@@ -175,7 +166,6 @@ span {
 }
 .list-checkbox-type {
   gap: 4px;
-  margin-top: 10px;
   display: grid;
 }
 .list-checkbox-type .checkbox-item {
@@ -185,6 +175,11 @@ span {
   display: flex;
   width: 100%;
 }
+.filter > p,
+.filter-extra div p {
+  margin-top: 10px;
+  margin-bottom: 4px;
+}
 .button-filter {
   padding: 0.5rem;
   margin-top: 4px;
@@ -193,44 +188,25 @@ span {
 }
 .filter-hidden {
   display: block;
-  min-width: 0px;
+  width: 0px;
+  height: 0px;
+  overflow: hidden;
   animation: hiddenFilter 0.1s linear;
   transition: all 0.1s linear;
-  margin-left: -18px;
 }
 .filter-show {
+  padding: 0px 8px;
   margin-top: 20px;
+  margin-left: 10px;
   border-left: 2px solid var(--bg-color);
   background-color: transparent;
-  min-width: 220px;
+  width: 200px;
+  height: 94%;
   display: block;
   animation: showFilter 0.1s ease-in;
   transition: all 0.1s linear;
 }
-@keyframes showFilter {
-  0% {
-    width: 0;
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-    min-width: 220px;
-    transform: translateX(0%);
-  }
-}
-@keyframes hiddenFilter {
-  0% {
-    opacity: 1;
-    min-width: 220px;
-    transform: translateX(0%);
-  }
-  100% {
-    min-width: 0px;
-    transform: translateX(-100%);
-    opacity: 0;
-  }
-}
+
 .checkbox-item button {
   font-weight: 400;
   padding: 2px 0px;
@@ -248,19 +224,108 @@ span {
   border: 1px solid var(--main-color);
   color: var(--main-color);
 }
-.filter-extra.filter-extra-show {
-  display: block;
-  padding: 0 10px;
-  width: 100%;
-  overflow: hidden;
-  transition: all 0.2s ease-out;
-  opacity: 1;
+.product-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
 }
-.filter-extra.filter-extra-hidden {
-  display: none;
-  min-width: 0%;
-  padding: 0px;
-  width: 0%;
-  overflow: hidden;
-  opacity: 0;
+.product-list .product-item {
+  min-height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: top;
+  flex-direction: column;
+  border: 1px solid var(--main-color);
+  border-radius: 4px;
+  padding: 4px;
+}
+.product-list .product-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 3px 2px #ccc;
+}
+.product-list .product-item .img-product {
+  height: 200px;
+  width: 160px;
+  margin: 10px 0;
+}
+.product-list .product-item .info-product {
+  padding: 10px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: space-between;
+  flex-direction: column;
+  text-align: left;
+}
+.product-list .product-item .info-product .info-product__tech span {
+  font-size: 16px;
+  font-weight: 400;
+  cursor: default;
+}
+.product-list .product-item .info-product p {
+  font-size: 18px;
+  cursor: default;
+}
+.product-list .product-item div .info-product--top {
+  flex: calc(1 / 3);
+  min-height: 34px;
+  border-bottom: 1px solid var(--text-color);
+}
+.product-list .product-item div .info-product--center {
+  flex: calc(1 / 3);
+}
+.product-list .product-item div .info-product--bot {
+  flex: calc(1 / 3);
+}
+.product-list .product-item div .info-product--bot span {
+  font-size: 16px;
+  color: var(--green-color);
+}
+.product-list .product-item div .info-product--bot p {
+  font-size: 16px;
+  color: var(--red-color);
+}
+@keyframes showFilter {
+  0% {
+    width: 0;
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+    width: 200px;
+    transform: translateX(0%);
+  }
+}
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+@keyframes hiddenFilter {
+  0% {
+    opacity: 1;
+    min-width: 220px;
+    transform: translateX(0%);
+  }
+  20% {
+    opacity: 0;
+  }
+  100% {
+    min-width: 0px;
+    transform: translateX(-30%);
+    opacity: 0;
+  }
 }
