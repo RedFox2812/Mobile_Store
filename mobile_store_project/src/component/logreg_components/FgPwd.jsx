@@ -4,6 +4,7 @@ import { useForm } from "react-hook-form";
 import Inputbox from "./Inputbox";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { NavLink } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -55,6 +56,9 @@ export default function FgPwd() {
           <button className="w-full p-5 mt-5 font-semibold text-white bg-black rounded-lg">
             Xác nhận
           </button>
+          <NavLink to="/login" className="cursor-pointer underline">
+            Quay lại trang đăng nhập
+          </NavLink>
         </div>
       </form>
     </div>

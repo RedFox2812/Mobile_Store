@@ -8,15 +8,18 @@ import { useForm } from "react-hook-form";
 import Inputbox from "./Inputbox";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { Link, NavLink } from "react-router-dom";
 
 const schema = yup.object({
-  username: yup.string().required("This field is required!"),
+  email: yup.string().required("This field is required!"),
   password: yup.string().required("This field is required!"),
 });
 
-const SigIn = () => {
+function Login() {
+  let userDT;
   const [input, setInput] = useState("login");
   const [data, setData] = useState("empty");
+  const [loged, setLoged] = useState("False");
   const {
     // register,
     handleSubmit,
@@ -27,26 +30,31 @@ const SigIn = () => {
   const onSubmitHandler = (values) => {
     if (!isValid) return;
     setData(values);
-    // console.log(data);
-    fetchData();
-  };
-  const fetchData = async (data) => {
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function_login?input=${input}&data=${data}`
+    const log_data = JSON.stringify(data);
+    console.log(log_data);
+    fetch(
+      `http://127.0.0.1:5000/execute_python_function?input=${input}&data=${log_data}`
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        userDT = data["result"];
+        localStorage.setItem("userdata", JSON.stringify(userDT));
+        if (userDT != "null") {
+          console.log(userDT);
+          setLoged("True");
+          localStorage.setItem("loged", JSON.stringify(loged));
+        } else {
+          console.log("error");
+        }
+      })
+      .catch((error) =>
+        console.error("There was a problem with the fetch operation:", error)
       );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const response = await res.json();
-      // setData(response);
-      console.log(response);
-    } catch {
-      console.log.error(
-        " There was a problem with the fetch operation:",
-        error
-      );
-    }
   };
   return (
     <div className="fixed top-[30px] left-[calc(50%-250px)] min-h-[600px] bg-white  max-w-[500px] ">
@@ -60,21 +68,21 @@ const SigIn = () => {
           <div className="flex flex-col gap-2  ">
             {/* UserName */}
             <label
-              htmlFor="username"
+              htmlFor="email"
               className="cursor-pointer text-xl font-semibold text-left "
             >
-              Tên người dùng
+              Email
             </label>
             <Inputbox
-              name="username"
-              placeholder="Nhập tên người dùng"
-              id="username"
+              name="email"
+              placeholder="Nhập email"
+              id="email"
               control={control}
               type="text"
             ></Inputbox>
-            {errors.username && (
+            {errors.email && (
               <span className="color: text-red-500 text-sm ">
-                {errors.username.message}
+                {errors.email.message}
               </span>
             )}
             {/* Password */}
@@ -97,20 +105,26 @@ const SigIn = () => {
               </span>
             )}
             <div className="flex justify-between">
-              <a className="cursor-pointer underline btn-fgpass">
-                Quên mật khẩu?
-              </a>
-              <a className="cursor-pointer underline btn-changepass">
-                Thay đổi mật khẩu?
-              </a>
+              <NavLink to="/fgpass" className="cursor-pointer underline">
+                Quên mật khẩu
+              </NavLink>
+              <NavLink to="/changepass" className="cursor-pointer underline">
+                Thay đổi mật khẩu
+              </NavLink>
             </div>
-            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-[black] rounded-lg hover:bg-slate-400 btn-dangnhap">
+            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-[black] rounded-lg hover:bg-slate-400 ">
               Đăng nhập
             </button>
             <div className="flex justify-center pb-4">
-              <p className="">
+              <p>
                 Chưa có tài khoản?
-                <a className="btn-register underline cursor-pointer">Đăng ký</a>
+                <NavLink
+                  to="/register"
+                  className="text-[blue] underline cursor-pointer"
+                >
+                  {" "}
+                  Đăng Ký
+                </NavLink>
               </p>
             </div>
           </div>
@@ -118,6 +132,5 @@ const SigIn = () => {
       </div>
     </div>
   );
-};
-
-export default SigIn;
+}
+export default Login;

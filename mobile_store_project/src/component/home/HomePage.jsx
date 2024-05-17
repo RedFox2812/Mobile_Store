@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-undef */
 import React, { useEffect, useState } from "react";
@@ -5,6 +6,9 @@ import FilterSlider from "../child_components/navbar/FilterSlider";
 import Filter from "../child_components/navbar/Filter";
 import FilterExtra from "../child_components/navbar/FilterExtra";
 import Button from "../elements/Button";
+import { Link, NavLink, Outlet, Route, Routes } from "react-router-dom";
+import Login from "../logreg_components/Login";
+
 // import Products from "../child_components/Products";
 const HomePage = () => {
   const [input, setInput] = useState("getProductList");
@@ -12,7 +16,7 @@ const HomePage = () => {
   const fetchData = async () => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=${input}`
+        `http://127.0.0.1:5000/execute_python_function?input=${input}&data=""`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -100,7 +104,44 @@ const HomePage = () => {
         </div>
       </div>
       <div className="container--main">
-        {/* <Products data={data ? data : "empty"}></Products> */}
+        <div className="container__header w-full flex items-center justify-between">
+          <div className="search-box">
+            <input
+              type="text"
+              className="search-input p-2 px-3 border border-main-clo outline-none rounded-sm"
+              defaultValue={"Nhập thông tin tìm kiếm"}
+            />
+          </div>
+          <ul className="navbar flex gap-3 p-3">
+            <li className="nav-item">Tình trạng đơn</li>
+            <li className="nav-item">Giỏ hàng</li>
+            <li className="nav-item">Chat với shop</li>
+            <li className="nav-item">
+              <NavLink
+                to="/login"
+                className="p-2 px-3 border border-main-clo text-[#fff] bg-main-clo font-semibold rounded-sm hover:opacity-[0.9]"
+              >
+                Đăng Nhập
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink
+                to="/login"
+                className="p-2 px-3 border border-gray-clo text-gray-clo bg-[#fff] font-semibold rounded-sm hover:text-main-clo hover:border-main-clo"
+              >
+                Đăng Ký
+              </NavLink>
+            </li>
+          </ul>
+        </div>
+        <div className="container__body">
+          <div className="banner">{/* thông tin giảm giá  */}</div>
+          <div className="products-box">{/* hiển thị sản phẩm */}</div>
+          <div className="products-page">{/* chuyển trang */}</div>
+        </div>
+        <div className="container__footer">
+          {/* thông tin liên hệ, chính sách bảo hành, chính sách giao hàng, truyền thông */}
+        </div>
       </div>
     </div>
   );

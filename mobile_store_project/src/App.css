@@ -53,8 +53,11 @@ html {
 .container {
   display: flex;
 }
+.container--main {
+  cursor: default;
+}
 .brand-item {
-  cursor: pointer;
+  cursor: default;
 }
 .brand-item:hover p {
   opacity: 1;
@@ -105,12 +108,15 @@ span {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  cursor: default;
 }
 .container--left .container-filter .filter {
   min-width: 200px;
   display: flex;
 }
-
+.container--left .container-filter button {
+  cursor: pointer;
+}
 .logo-home {
   font-size: 24px;
   font-weight: 600;
@@ -143,6 +149,7 @@ span {
   display: flex;
   text-align: left;
   align-items: center;
+  cursor: pointer;
 }
 .brand-item img {
   height: 38px;

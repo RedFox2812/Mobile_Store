@@ -5,6 +5,7 @@ import Inputbox from "./Inputbox";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import { NavLink } from "react-router-dom";
 
 const schema = yup
   .object({
@@ -29,7 +30,7 @@ const schema = yup
   })
   .required();
 
-export default function Logreg() {
+function Register() {
   const {
     // register,
     handleSubmit,
@@ -169,9 +170,15 @@ export default function Logreg() {
         </button>
         <p className="text-center pb-8">
           Bạn đã có tài khoản?
-          <a className="underline cursor-pointer btn-login">Đăng nhập</a>
+          <NavLink
+            to="/login"
+            className=" text-[blue] underline cursor-pointer"
+          >
+            Đăng Nhập
+          </NavLink>
         </p>
       </form>
     </div>
   );
 }
+export default Register;
