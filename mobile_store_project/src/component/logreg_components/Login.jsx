@@ -16,10 +16,8 @@ const schema = yup.object({
 });
 
 function Login() {
-  let userDT;
-  const [input, setInput] = useState("login");
-  const [data, setData] = useState("empty");
-  const [loged, setLoged] = useState("False");
+  const [logData, setLogData] = useState("empty");
+  const userId = localStorage.getItem("userId");
   const {
     // register,
     handleSubmit,
@@ -29,47 +27,52 @@ function Login() {
 
   const onSubmitHandler = (values) => {
     if (!isValid) return;
-    setData(values);
-    const log_data = JSON.stringify(data);
-    console.log(log_data);
-    fetch(
-      `http://127.0.0.1:5000/execute_python_function?input=${input}&data=${log_data}`
-    )
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        userDT = data["result"];
-        localStorage.setItem("userdata", JSON.stringify(userDT));
-        if (userDT != "null") {
-          console.log(userDT);
-          setLoged("True");
-          localStorage.setItem("loged", JSON.stringify(loged));
-        } else {
-          console.log("error");
-        }
-      })
-      .catch((error) =>
-        console.error("There was a problem with the fetch operation:", error)
-      );
+    const log_data = JSON.stringify(values);
+    setLogData(log_data);
   };
+  useEffect(() => {
+    if (userId != "") {
+      window.location.href = "/";
+    }
+    if (logData != "empty") {
+      fetch(
+        `http://127.0.0.1:5000/execute_python_function?input=login&data=${logData}`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const userId = data["result"];
+          console.log(userId);
+          if (userId != "null") {
+            localStorage.setItem("userId", userId);
+            window.location.href = "/";
+          } else {
+            console.log("error");
+          }
+        })
+        .catch((error) =>
+          console.error("There was a problem with the fetch operation:", error)
+        );
+    }
+  }, [logData]);
   return (
-    <div className="fixed top-[30px] left-[calc(50%-250px)] min-h-[600px] bg-white  max-w-[500px] ">
+    <div className="fixed top-[20px] left-[calc(50%-250px)] min-h-[600px] bg-white  max-w-[500px] ">
       <div className="my-[10px] mb-[10px] ">
         <form
           className="absolute w-[450px] left-[25px] shadow-2xl rounded-3xl p-[20px]"
           onSubmit={handleSubmit(onSubmitHandler)}
-          autoComplete="off"
+          autoComplete="on"
         >
           <p className="text-center text-2xl py-10">DDA MOBILESTORE</p>
           <div className="flex flex-col gap-2  ">
             {/* UserName */}
             <label
               htmlFor="email"
-              className="cursor-pointer text-xl font-semibold text-left "
+              className="cursor-pointer text-[18px] font-semibold text-left "
             >
               Email
             </label>
@@ -88,7 +91,7 @@ function Login() {
             {/* Password */}
             <label
               htmlFor="password"
-              className="cursor-pointer text-xl font-semibold text-left  "
+              className="cursor-pointer text-[18px] font-semibold text-left  "
             >
               Mật khẩu
             </label>
@@ -112,7 +115,7 @@ function Login() {
                 Thay đổi mật khẩu
               </NavLink>
             </div>
-            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-[black] rounded-lg hover:bg-slate-400 ">
+            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-main-clo rounded-lg hover:bg-slate-400 ">
               Đăng nhập
             </button>
             <div className="flex justify-center pb-4">

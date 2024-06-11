@@ -1,12 +1,14 @@
 :root {
-  --main-color: #4f6bff;
+  --main-color: #4f8bff;
   --hover-color: #e9edff;
   --text-color: #6b6b6b;
-  --red-color: #fc6565;
+  --red-color: #d0021c;
   --green-color: #94e9b5;
   --gray-color: #ccc;
   --bg-color: #dde3ec;
   --list-color: #fbf9f9;
+  --white-color: #fff;
+  --black-color: #000;
 }
 @tailwind base;
 @tailwind components;

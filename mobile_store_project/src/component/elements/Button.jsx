@@ -7,10 +7,9 @@ import styled from "styled-components";
 const ButtonStyle = styled.button`
   display: block;
   align-items: center;
-  color: #fff;
-  background-color: var(--main-color);
-  border-radius: 25px;
-  border: 1px solid transparent;
+  /* background-color: #fff; */
+  border-radius: 2px;
+  padding: 8px 6px;
   text-align: center;
   cursor: pointer;
   &:hover {
@@ -22,7 +21,11 @@ const ButtonStyle = styled.button`
 `;
 const Button = (props) => {
   return (
-    <ButtonStyle className={props.className} href={props.href}>
+    <ButtonStyle
+      className={props.className}
+      href={props.href}
+      onClick={props.onClick}
+    >
       {props.text ? props.text : ""}
     </ButtonStyle>
   );

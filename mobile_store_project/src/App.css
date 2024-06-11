@@ -59,12 +59,15 @@ html {
 .brand-item {
   cursor: default;
 }
+.brand-item * {
+  pointer-events: none;
+}
 .brand-item:hover p {
   opacity: 1;
 }
 .brand-item p.active {
   opacity: 100%;
-  padding-left: 50px;
+  padding-left: 48px;
 }
 body {
   font-size: 18px;
@@ -76,7 +79,7 @@ span {
   font-weight: 500;
 }
 .container--left {
-  border-right: 10px solid var(--main-color);
+  border-right: 6px solid var(--main-color);
   padding: 4px 10px;
   position: relative;
   height: 100%;
@@ -127,8 +130,36 @@ span {
   height: 100%;
   width: 100%;
   overflow: scroll;
+  overflow-x: hidden;
   flex: 1;
   padding: 20px;
+}
+.container--main.reponsive * {
+  transition: all 0.2s ease-out;
+}
+.container--main.reponsive .container__header .search-box {
+  width: 30%;
+}
+.container--main.reponsive .container__body .products-box h3 {
+  font-size: 20px;
+  padding: 0px -8px;
+}
+.container--main.reponsive .container__body .products-box .info-item {
+  padding: 0 12px;
+}
+.container--main.reponsive .container__body .products-box .info-item li {
+  font-size: 10px;
+  padding: 4px 2px;
+}
+.container--main.reponsive .highprice {
+  font-size: 16px;
+}
+.container--main.reponsive .lowprice {
+  font-size: 20px;
+}
+.container--main.reponsive .button-box * {
+  padding: 4px;
+  font-size: 16px;
 }
 .container-filter {
   display: flex;
@@ -292,6 +323,27 @@ span {
   font-size: 16px;
   color: var(--red-color);
 }
+.slideshow {
+  margin: 20px 0;
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.slide {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+  opacity: 1;
+}
 @keyframes showFilter {
   0% {
     width: 0;
@@ -335,4 +387,21 @@ span {
     transform: translateX(-30%);
     opacity: 0;
   }
+}
+@keyframes slider-show {
+  0% {
+    transform: rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: rotate(180deg);
+    opacity: 0.5;
+  }
+  100% {
+    transform: rotate(360deg);
+    opacity: 1;
+  }
+}
+.container__footer a:hover {
+  color: purple;
 }

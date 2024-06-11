@@ -9,24 +9,25 @@ import { NavLink } from "react-router-dom";
 
 const schema = yup
   .object({
-    username: yup.string().required("This field is required!"),
-    phonenumber: yup.number().required("This field is required!"),
-    address: yup.string().required("This field is required!"),
+    username: yup.string().required("Thông tin bắt buộc !"),
+    phonenumber: yup.string().required("Thông tin bắt buộc !"),
+    address: yup.string().required("Thông tin bắt buộc !"),
     email: yup
-      .string("Please enter valid email")
-      .email()
-      .required("This field is required!"),
+      .string()
+      .email("Định dạng email không hợp lệ !")
+      .required("Email là bắt buộc !"),
+
     password: yup
       .string()
-      .min(8, "Your password must be at least 8 characters or more")
+      .min(8, "Mật khẩu ít nhất phải có ít nhất 8 ký tự")
       .matches(
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
         {
           message:
-            "Your password must be at least 1 uppercase, 1 number and 1 special character",
+            "Mật khẩu phải chứa 1 ký tự viết hoa, 1 số và 1 ký tự đặt biệt",
         }
       )
-      .required("This field is required!"),
+      .required("Password là bắt buộc !"),
   })
   .required();
 
@@ -47,66 +48,69 @@ function Register() {
   };
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
-    <div className="bg-white max-w-[500px] mx-auto shadow-2xl rounded-3xl">
+    <div className="bg-white max-w-[520px] mx-auto shadow-2xl rounded-3xl relative top-6">
       <form
         onSubmit={handleSubmit(onSubmitHandler)}
         autoComplete="off"
-        className="max-w-[450px] mx-auto my-40 "
+        className="w-[100%] mx-auto py-2 px-4"
       >
-        <p className="text-center text-3xl py-8">DDA MOBILESTORE</p>
-        <div className="flex flex-row gap-3">
-          <div className="ip-container flex flex-col ">
-            <div className="ip-child flex justify-between">
-              {/* UserName*/}
-              <div>
-                <label
-                  htmlFor="username"
-                  className="cursor-pointer text-xl font-semibold"
-                >
-                  Tên người dùng
-                </label>
-                <Inputbox
-                  name="username"
-                  placeholder="Nhập tên người dùng"
-                  id="username"
-                  control={control}
-                  type="text"
-                ></Inputbox>
-                {errors.username && (
-                  <span className="color: text-red-500 text-sm ">
-                    {errors.username.message}
-                  </span>
-                )}
-              </div>
+        <p className="text-center w-full bg-main-clo text-3xl mt-2 mb-3 p-3 text-white-clo rounded-t-3xl ">
+          DDA MOBILESTORE
+        </p>
+        <div className="flex flex-row">
+          <div className="ip-container flex flex-col w-full">
+            <div className="w-full">
+              <div className="ip-child w-full flex">
+                {/* UserName*/}
+                <div className="w-full">
+                  <label
+                    htmlFor="username"
+                    className="cursor-pointer text-[18px] font-semibold"
+                  >
+                    Tên người dùng
+                  </label>
+                  <Inputbox
+                    name="username"
+                    placeholder="Nhập tên người dùng"
+                    id="username"
+                    control={control}
+                    type="text"
+                  ></Inputbox>
+                  {errors.username && (
+                    <span className="color: text-red-500 text-sm ">
+                      {errors.username.message}
+                    </span>
+                  )}
+                </div>
 
-              <div className="w-[50%]">
-                {/* Phone Number */}
-                <label
-                  htmlFor="phonenumber"
-                  className="cursor-pointer text-xl font-semibold "
-                >
-                  SDT
-                </label>
-                <Inputbox
-                  name="phonenumber"
-                  placeholder="SDT"
-                  id="phonenumber"
-                  control={control}
-                  type="text"
-                ></Inputbox>
-                {errors.phonenumber && (
-                  <span className="color: text-red-500 text-sm ">
-                    {errors.phonenumber.message}
-                  </span>
-                )}
+                <div className="w-full">
+                  {/* Phone Number */}
+                  <label
+                    htmlFor="phonenumber"
+                    className="cursor-pointer text-[18px] font-semibold "
+                  >
+                    SDT
+                  </label>
+                  <Inputbox
+                    name="phonenumber"
+                    placeholder="SDT"
+                    id="phonenumber"
+                    control={control}
+                    type="text"
+                  ></Inputbox>
+                  {errors.phonenumber && (
+                    <span className="color: text-red-500 text-sm ">
+                      {errors.phonenumber.message}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
-
-            <div className="ip-child flex flex-col">
+            <div className="ip-child flex flex-col px-3">
               {/* Email */}
               <label
                 htmlFor="email"
-                className="cursor-pointer text-xl font-semibold "
+                className="cursor-pointer text-[18px] font-semibold "
               >
                 Email
               </label>
@@ -118,7 +122,7 @@ function Register() {
                 type="email"
               ></Inputbox>
               {errors.email && (
-                <span className="color: text-red-500 text-sm ">
+                <span className="color: text-red-500 text-sm   ">
                   {errors.email.message}
                 </span>
               )}
@@ -126,7 +130,7 @@ function Register() {
               {/* password */}
               <label
                 htmlFor="password"
-                className="cursor-pointer text-xl font-semibold"
+                className="cursor-pointer text-[18px] font-semibold"
               >
                 Mật khẩu
               </label>
@@ -146,7 +150,7 @@ function Register() {
               {/* Adress */}
               <label
                 htmlFor="address"
-                className="cursor-pointer text-xl font-semibold"
+                className="cursor-pointer text-[18px] font-semibold"
               >
                 Địa chỉ
               </label>
@@ -165,14 +169,16 @@ function Register() {
             </div>
           </div>
         </div>
-        <button className="w-full p-5 mt-5 font-semibold text-white bg-black rounded-lg">
-          Đăng ký
-        </button>
-        <p className="text-center pb-8">
+        <div className="px-3 ">
+          <button className="w-[100%] p-3 my-2 font-semibold text-[#fff] text-[20px] border border-main-clo bg-main-clo rounded-lg">
+            Đăng ký
+          </button>
+        </div>
+        <p className="text-center pb-2 mt-2">
           Bạn đã có tài khoản?
           <NavLink
             to="/login"
-            className=" text-[blue] underline cursor-pointer"
+            className=" text-[blue] ml-2 underline cursor-pointer"
           >
             Đăng Nhập
           </NavLink>

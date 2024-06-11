@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from "react";
 
 const FilterSlider = () => {
@@ -5,6 +6,9 @@ const FilterSlider = () => {
   const [maxPrice, setMaxPrice] = useState(11);
 
   const handleMinPriceChange = (e) => {
+    if (minPrice < 0) {
+      setMinPrice(0);
+    }
     if (minPrice >= maxPrice) {
       setMaxPrice(Number(minPrice) + 10);
     } else {
@@ -12,6 +16,9 @@ const FilterSlider = () => {
     }
   };
   const handleMaxPriceChange = (e) => {
+    if (minPrice > 50) {
+      setMinPrice(50);
+    }
     if (minPrice >= maxPrice) {
       setMinPrice(Number(maxPrice) - 10);
     } else {
@@ -33,7 +40,7 @@ const FilterSlider = () => {
             id="minPrice"
             name="minPrice"
             min="0"
-            max="100"
+            max="50"
             value={minPrice}
             onChange={handleMinPriceChange}
             className="w-full boxHover"
@@ -43,7 +50,7 @@ const FilterSlider = () => {
             id="maxPrice"
             name="maxPrice"
             min="0"
-            max="100"
+            max="50"
             value={maxPrice}
             onChange={handleMaxPriceChange}
             className="w-full boxHover"

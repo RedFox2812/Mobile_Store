@@ -12,7 +12,7 @@ const Inputbox = ({ control, ...props }) => {
   });
   return (
     <input
-      className="p-4 my-2 border border-black rounded-lg bg-white outline-none transition-all focus:border-blue-500"
+      className="w-100% p-2 my-2 border border-black rounded-lg bg-white outline-none transition-all focus:border-blue-500"
       {...field}
       {...props}
     ></input>

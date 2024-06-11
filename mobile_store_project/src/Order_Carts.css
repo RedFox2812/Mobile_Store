@@ -1,0 +1,252 @@
+:root {
+  --transition: all 0.3s linear;
+  --spacing: 0.25rem;
+  --radius: 0.25rem;
+  --large-screen-width: 1170px;
+  --small-screen-width: 90vw;
+  --fixed-width: 50rem;
+}
+a {
+  text-decoration: none;
+}
+img {
+  width: 100%;
+  display: block;
+}
+
+.custom-checkbox-square {
+  width: 20px;
+  height: 20px;
+}
+
+/* more global css */
+
+/*
+ =============== 
+ Navbar
+ ===============
+ */
+.loading {
+  text-align: center;
+  margin-top: 5rem;
+}
+nav {
+  background: var(--main-color);
+  padding: 1.25rem 2rem;
+  height: 100px;
+}
+.nav-center {
+  /* max-width: 203px; */
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  text-align: center;
+}
+nav h3 {
+  margin: auto 0;
+  color: var(--white-color);
+}
+.nav-container {
+  display: block;
+  position: relative;
+}
+nav svg {
+  width: 2rem;
+  fill: var(--white-color);
+}
+/*
+ =============== 
+ Cart
+ ===============
+ */
+.cart {
+  min-height: calc(100vh - 120px);
+  /* width: 100%; */
+  margin: 0 auto;
+  padding: 2.5rem 0;
+  max-width: var(--fixed-width);
+}
+.cart h2 {
+  text-transform: uppercase;
+  /* text-align: center; */
+  color: #000;
+  margin-bottom: 3rem;
+}
+.empty-cart {
+  text-transform: lowercase;
+  color: var(--gray-color);
+  margin-top: 1rem;
+  text-align: center;
+}
+.cart footer {
+  margin-top: 4rem;
+  text-align: center;
+}
+.cart-total h4 {
+  text-transform: capitalize;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+.payment-backhome {
+  display: flex;
+  justify-content: space-between;
+}
+.payment-btn {
+  background: #000;
+  padding: 0.5rem 1rem;
+  color: #fff;
+  border: 1px solid #000;
+  margin-top: 2.25rem;
+  border-radius: var(--radius);
+}
+.payment-btn:hover {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  border-color: #fff;
+}
+.backhome {
+  color: #000;
+  margin-top: 2.25rem;
+}
+.backhome:hover {
+  color: red;
+}
+/*
+ =============== 
+ Cart Item
+ ===============
+ */
+.cart-item {
+  display: grid;
+  align-items: center;
+  grid-template-columns: auto 1fr auto;
+  grid-column-gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+.cart-item img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+}
+.cart-item h4 {
+  font-weight: 500;
+  font-size: 22px;
+  letter-spacing: 2px;
+}
+.item-price {
+  font-size: 16px;
+  color: var(--red-color);
+}
+.remove-btn {
+  color: red;
+  letter-spacing: var(--spacing);
+  cursor: pointer;
+  font-size: 0.85rem;
+  background: transparent;
+  border: none;
+  margin-top: 0.375rem;
+  transition: var(--transition);
+}
+.remove-btn:hover {
+  color: rgba(255, 0, 0, 0.5);
+}
+.amount-btn {
+  width: 1.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.amount-btn:hover svg {
+  fill: var(--gray-color);
+}
+hr {
+  background: var(--gray-color);
+  border-color: transparent;
+  border-width: 0.25px;
+}
+
+.text {
+  font-size: 20px;
+  color: var(--white-color);
+  font-weight: 600;
+  padding-bottom: 20px;
+}
+table {
+  font-family: poppin, sans-serif;
+  border: 1px solid var(--main-color);
+  width: 90%;
+  margin: auto;
+  margin-top: 20px;
+}
+.table-container {
+  margin-top: 16px;
+}
+thead th {
+  font-weight: 600;
+}
+th {
+  padding: 4px;
+  font-size: 16px;
+  font-weight: 400;
+  border: 1px solid var(--main-color);
+}
+.col-1,
+.col-2 {
+  width: 80px;
+}
+.col-3 {
+  width: 400px;
+  text-align: left;
+}
+.col-4 {
+  width: 300px;
+}
+.select-all {
+  width: 100px;
+  text-decoration: underline;
+  margin: 0;
+}
+
+.select-all p {
+  margin-left: 4px;
+}
+
+.btn-static {
+  display: block;
+  margin-top: 10px;
+}
+
+.btn-static-fix,
+.btn-static-remove {
+  padding: 10px;
+  /* width: 100px; */
+  color: #fff;
+  border-radius: 8px;
+}
+
+.btn-static-fix {
+  background-color: #000;
+  margin-left: 10px;
+}
+
+.btn-static-remove {
+  background-color: var(--red-color);
+}
+
+.btn-static-fix,
+.btn-static-remove:hover {
+  cursor: pointer;
+}
+
+.btn-static-remove:hover {
+  background-color: rgba(255, 0, 0, 0.8);
+}
+
+.btn-static-fix:hover {
+  background: rgba(0, 0, 0, 0.8);
+}
+.order {
+  text-shadow: 2px 2px 5px black;
+}
