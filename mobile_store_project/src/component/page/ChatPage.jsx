@@ -1,10 +1,16 @@
-import React, { useEffect } from "react";
+// import React, { useEffect } from "react";
+
+import { useEffect } from "react";
 
 const ChatPage = () => {
   function sendMessage() {
     const chatBody = document.getElementById("chat-body");
     const chatInput = document.getElementById("chat-input");
-    const message = chatInput.value.trim();
+    const message = chatInput.value;
+    const userMessage = document.createElement("div");
+    userMessage.classList.add("chat-message", "user");
+    userMessage.textContent = message;
+    chatBody.appendChild(userMessage);
     if (message) {
       fetch(
         `http://127.0.0.1:5000/execute_python_function?input=chatbot&data=${message}`
@@ -16,16 +22,13 @@ const ChatPage = () => {
           return response.json();
         })
         .then((data) => {
-          const result = data["result"];
+          const result = data.result;
           console.log(result);
-          const userMessage = document.createElement("div");
-          userMessage.classList.add("chat-message", "user");
-          userMessage.textContent = message;
-          chatBody.appendChild(userMessage);
+
           // Simulate bot response
           const botMessage = document.createElement("div");
           botMessage.classList.add("chat-message", "bot");
-          botMessage.textContent = "Mobile_store: " + result.response;
+          botMessage.textContent = "DDA Store: " + result;
           chatBody.appendChild(botMessage);
 
           chatInput.value = "";
@@ -36,7 +39,6 @@ const ChatPage = () => {
         );
     }
   }
-
   useEffect(() => {
     document
       .getElementById("chat-input")
@@ -49,8 +51,15 @@ const ChatPage = () => {
 
   return (
     <div className="chat-container">
-      <div className="chat-header">Chat Tư Vấn</div>
-      <div className="chat-body" id="chat-body"></div>
+      <div className="chat-header">
+        <p>Chat Tư Vấn</p>
+        <i className="fa-solid fa-x"></i>
+      </div>
+      <div className="chat-body" id="chat-body">
+        <div className="chat-message bot">
+          DDA Store: Xin chào, tôi là bot chat của DDA Store
+        </div>
+      </div>
       <div className="chat-footer">
         <input type="text" id="chat-input" placeholder="Type a message..." />
         <button
