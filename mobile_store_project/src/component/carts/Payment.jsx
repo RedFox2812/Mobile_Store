@@ -1,49 +1,31 @@
-/* eslint-disable no-undef */
 /* eslint-disable react-hooks/exhaustive-deps */
-// eslint-disable-next-line no-unused-vars
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import "./Payment.css";
 import Button from "../elements/Button";
+import { NavLink } from "react-router-dom";
 import ChatPage from "../page/ChatPage";
-
-const OrderStatusPage = () => {
+const Payment = () => {
   const [show, setShow] = useState(false);
-  const [showChat, setShowChat] = useState(false);
-  const [dataOrder, setDataOrder] = useState("");
   let dataUser = localStorage.getItem("dataUser");
+  const [showChat, setShowChat] = useState(false);
   const [avata, setAvata] = useState("");
-  const fetchData = async () => {
-    try {
-      const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=getorder&data=${dataUser["_id"]}`
-      );
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const response = await res.json();
-      const result = response.result;
-      setDataOrder(JSON.parse(result));
-      console.log(dataOrder);
-    } catch {
-      console.error(" There was a problem with the fetch operation:");
-    }
-  };
   useEffect(() => {
     const btnClose = document.querySelector("#btn-close-chat");
     btnClose.addEventListener("click", () => {
       setShowChat(false);
     });
+
     if (dataUser != "") {
-      dataUser = JSON.parse(dataUser);
-      fetchData();
-      // console.log(dataUser);
-      setAvata(dataUser["avata"]);
       setShow(true);
+      dataUser = JSON.parse(dataUser);
+      console.log(dataUser);
+      setAvata(dataUser["avata"]);
+      // console.log(dataUser);
     }
   }, [dataUser]);
   return (
     <>
-      <main className="">
+      <main>
         <nav>
           <div className="nav-center">
             <NavLink
@@ -54,13 +36,16 @@ const OrderStatusPage = () => {
             </NavLink>
             <div className="nav-container">
               <ul className="navbar flex gap-4">
-                <li className=" nav-item--blue text-white-clo font-semibold border-b-4 border-white-clo">
-                  Tình trạng đơn
-                </li>
-                <li className="nav-item--blue text-white-clo font-semibold">
-                  <NavLink to="/cart" className=" text-white-clo font-semibold">
-                    Giỏ Hàng
+                <li className="nav-item--blue">
+                  <NavLink
+                    to="/order_status"
+                    className=" text-white-clo font-semibold"
+                  >
+                    Tình trạng đơn
                   </NavLink>
+                </li>
+                <li className=" text-white-clo border-b-4 border-white-clo font-semibold">
+                  Giỏ Hàng
                 </li>
                 <li
                   className="nav-item--blue cursor-pointer"
@@ -83,7 +68,7 @@ const OrderStatusPage = () => {
                     <li className="nav-item">
                       <NavLink
                         to="/register"
-                        className="py-1  px-3 border border-gray-clo text-gray-clo bg-[#fff] font-semibold rounded-sm hover:text-main-clo hover:border-main-clo"
+                        className=" py-1 px-3 border border-gray-clo text-gray-clo bg-[#fff] font-semibold rounded-sm hover:text-main-clo hover:border-main-clo"
                       >
                         Đăng Ký
                       </NavLink>
@@ -94,13 +79,15 @@ const OrderStatusPage = () => {
                     <li className="nav-item--blue">
                       <div id="user-avt">
                         {dataUser ? (
-                          <NavLink to="/user-info">
-                            <img
-                              className="w-[46px] h-[46px] bg-contain rounded-full cursor-pointer border-2 border-white-clo hover:shadow-md hover:border-main-clo"
-                              src={avata}
-                              alt="avata"
-                            />
-                          </NavLink>
+                          <>
+                            <NavLink to="/user-info">
+                              <img
+                                className="w-[45px] h-[45px] bg-contain rounded-full cursor-pointer border-2 border-white-clo hover:shadow-md hover:border-green-clo"
+                                src={avata}
+                                alt="avata"
+                              />
+                            </NavLink>
+                          </>
                         ) : (
                           ""
                         )}
@@ -123,93 +110,128 @@ const OrderStatusPage = () => {
             </div>
           </div>
         </nav>
-        <div className="h-auto min-h-[400px]">
-          {show ? (
-            <div className="table-container">
-              <table>
-                <thead>
-                  <tr className="text-[16px]">
-                    <th className="col-1 text-center">Chỉnh sửa</th>
-                    <th className="col-2 text-center">ID</th>
-                    <th className="col-3 text-center">Sản phẩm</th>
-                    <th className="col-4 text-center">Số lượng</th>
-                    <th className="col-4 text-center">Giá tiên</th>
-                    <th className="col-4 text-center">Địa chỉ</th>
-                    <th className="col-4 text-center">SDT</th>
-                    <th className="col-4 text-center">Tình trạng</th>
-                  </tr>
-                </thead>
-                <tbody className="py-2">
-                  {dataOrder ? (
-                    dataOrder.map((order) => {
-                      return (
-                        <tr
-                          key={order["_id"]}
-                          id={order["_id"]}
-                          className="text-left"
-                        >
-                          <th className="col-1 text-center">
-                            <NavLink
-                              to={"order_status/order_edit"}
-                              className="bg-main-clo text-white-clo px-2 py-2 rounded-xl hover:translate-y-[-2px]"
-                            >
-                              <i className="fa-solid fa-pen"></i>
-                            </NavLink>
-                          </th>
-                          <th className="col-2">{order["_id"]}</th>
-                          <th className="col-3 min-w-[100px]">
-                            {order["namesp"]}
-                          </th>
-                          <th className="col-4 text-center">
-                            {order["soluong"]}
-                          </th>
-                          <th className="col-4 text-center">
-                            {order["gia"].toLocaleString("it-IT", {
-                              style: "currency",
-                              currency: "VND",
-                            })}
-                          </th>
-                          <th className="col-4 min-w-[300px] text-left">
-                            {order["diachi"]}
-                          </th>
-                          <th className="col-4 text-center">
-                            {order["phone"]}
-                          </th>
-                          <th className="col-4 min-w-[100px]">
-                            {order["tinhtrang"]}
-                          </th>
-                        </tr>
-                      );
-                    })
-                  ) : (
-                    <div>Bạn chưa có đơn hàng nào</div>
-                  )}
-                </tbody>
-              </table>
-            </div>
-          ) : (
-            <div>
-              <p className="font-semibold mt-10 text-[24px]">
-                Vui lòng đăng nhập để xem thông tin và tình trạng đơn hàng
-              </p>
+        <dev>
+          <p className="text-[30px] mt-10">Thanh toán sản phẩm</p>
+        </dev>
+        <div className="max-w-[1080px] mx-auto">
+          <div>
+            <div className="items-center flex">
+              <img
+                src="https://images.fpt.shop/unsafe/fit-in/800x800/filters:quality(90):fill(white)/fptshop.com.vn/Uploads/Originals/2023/10/30/638342502751589917_ip-15-pro-max-dd-bh-2-nam.jpg"
+                alt=""
+                className="w-[200px]"
+              />
+              <div className="chitietsp text-left flex justify-between w-full text-[20px]">
+                <div>
+                  <div>
+                    <p className="text-[26px]">iPhone 15 Pro Max 256GB </p>
+                    <p className="text-[26px]">Số lượng</p>
+                  </div>
+                </div>
+                <div className="item-price">
+                  <p className="text-[26px] text-red-clo">29.590.000 VND</p>
+                  <p className="text-[26px]">1</p>
+                </div>
+              </div>
 
-              <div className="btn-static grid grid-cols-1 w-[30%] mx-auto">
-                <button className="btn-login p-3 border-2 border-main-clo bg-main-clo text-white-clo font-semibold rounded-md mt-5 hover:opacity-90">
-                  <NavLink to="/login" className="nav-item">
-                    Trở về trang đăng nhập
-                  </NavLink>
-                </button>
-                <button className="btn-login p-3 border-2 border-main-clo text-main-clo font-semibold rounded-md mt-5 hover:opacity-90">
-                  <NavLink to="/" className="nav-item">
-                    Trở về trang chủ
-                  </NavLink>
-                </button>
+              <div></div>
+            </div>
+            <div className="khuyenmai my-3">
+              <p>Khuyến mãi theo sản phẩm</p>
+            </div>
+            <div className="khuyenmai-list">
+              <p>
+                Đặc quyền EDU T06.2024 - DV - SIM FPT - Tặng PMH 100,000đ Mua
+                dịch vụ chọn số đẹp
+              </p>
+              <p>
+                Đặc quyền dành cho sinh viên - Giảm ngay 100,000đ áp dụng đến
+                30/06Xem chi tiết
+              </p>
+              <p>Giảm ngay 3,400,000đ áp dụng đến 17/06</p>
+            </div>
+            <div className="khuyenmai my-3">
+              <p>Khuyến mãi thanh toán</p>
+            </div>
+            <div className="khuyenmai-list">
+              <p>
+                Nhập mã ZLP150 giảm tối đa 150,000đ khi thanh toán 100% qua
+                ZaloPayXem chi tiết
+              </p>
+              <p>
+                Nhập mã MOMOFPT, giảm 1% tối đa 100.000đ khi thanh toán qua
+                MomoXem chi tiết
+              </p>
+              <p>
+                Nhập mã VTS3FPTS, Giảm 5% tối đa 300,000đ khi thanh toán qua ví
+                trả sau Momo
+              </p>
+            </div>
+          </div>
+          {/* </div> */}
+          <div className="thanhtoan-cart">
+            <div className="nhanhang">
+              <div className="nhanhang-title px-2">
+                <p>
+                  <strong>Chọn phương thức nhận hàng</strong>
+                </p>
+                <div className="flex gap-5">
+                  <div className="flex gap-2 ">
+                    <input type="checkbox" className="" />
+                    <p>Giao hàng tận nơi</p>
+                  </div>
+                  <div className="flex gap-2 ">
+                    <input type="checkbox" className="" />
+                    <p>Nhận tại cửa hàng</p>
+                  </div>
+                </div>
+              </div>
+              <div className="">
+                <p className="text-[30px]">Thông tin đặt hàng</p>
+                <div className="info-khachdathang">
+                  <div className="info-permit flex px-2 gap-2">
+                    <input
+                      type="text"
+                      placeholder="Họ và tên"
+                      className="w-full px-2 py-3"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Nhập số điện thoại"
+                      className="w-full px-2 py-3"
+                    />
+                  </div>
+                  <div className="w-full p-2">
+                    <input
+                      type="text"
+                      placeholder="Nhập email(không bắt buộc)"
+                      className="w-full px-2 py-3 border border-main-clo rounded-xl"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          )}
+            <div className="thongtin-thanhtoan px-2">
+              <div className="thongtin text-left">
+                <p>Tổng tiền:</p>
+                <p>Giảm giá khuyến mãi:</p>
+                <p>Giảm giá voucher:</p>
+              </div>
+              <div className="giatien">
+                <p>29.590.000 VND</p>
+                <p>0</p>
+                <p>0</p>
+              </div>
+            </div>
+            <div>
+              <button className="btn-payment mb-[30px]">
+                Hoàn tất đặt hàng
+              </button>
+            </div>
+          </div>
         </div>
 
-        <div className="w-full mx-auto  container__footer flex text-left justify-between p-5 mt-5 shadow-lg border-t-2 border-t-main-clo">
+        <div className="w-full mx-auto container__footer flex text-left justify-between p-5 mt-5 shadow-lg border-t-2 border-t-main-clo">
           <div className="footer-col-1">
             <p className="text-[20px]">Thông tin cửa hàng</p>
             <ul className="text-[16px]">
@@ -324,6 +346,7 @@ const OrderStatusPage = () => {
           </div>
         </div>
       </main>
+
       <div className="popup-chatbot fixed z-[999] bottom-10 right-[35px]">
         <ChatPage show={showChat}></ChatPage>
       </div>
@@ -331,4 +354,4 @@ const OrderStatusPage = () => {
   );
 };
 
-export default OrderStatusPage;
+export default Payment;

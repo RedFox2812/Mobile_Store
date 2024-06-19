@@ -157,7 +157,7 @@ span {
 .container--main.reponsive .lowprice {
   font-size: 20px;
 }
-.container--main.reponsive .button-box * {
+.container--main.reponsive .button-box button {
   padding: 4px;
   font-size: 16px;
 }
@@ -487,4 +487,38 @@ span {
 }
 .container__footer a:hover {
   color: purple;
+}
+.nav-item {
+  font-weight: 500;
+}
+.nav-item:hover {
+  color: var(--main-color);
+}
+.nav-item--blue {
+  color: var(--white-color);
+  font-weight: 500;
+}
+.nav-item--blue:hover {
+  border-bottom: 4px solid #fff;
+}
+.highprice {
+  margin-bottom: -10px;
+  padding-left: 10px;
+  font-size: 16px;
+  color: var(--gray-color);
+  position: relative;
+}
+.highprice::before {
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  content: "";
+  width: 60%;
+  height: 2px;
+  background-color: var(--gray-color);
+}
+.lowprice {
+  margin-top: 6px;
+  font-size: 24px;
+  color: var(--red-color);
 }

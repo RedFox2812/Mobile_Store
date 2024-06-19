@@ -15,10 +15,7 @@ import numpy as np
 import math
 import random
 
-training_data_path = "training_data"
-datatrain = pickle.load(open(training_data_path, "r+b"))
-words = datatrain["words"]
-idf_arr = datatrain["idf_arr"]
+
 client = MongoClient(uri, server_api=ServerApi("1"))
 database = client["mobile_store_train"]
 data = database["trains"]
@@ -50,6 +47,10 @@ def loc_tu_trung_nhau(sent):
         if word not in seen:
             seen.add(word)
             result.append(word)
+        else:
+            if sent.count(word) < 3:
+                seen.add(word)
+                result.append(word)
     # Ghép các từ lại thành một chuỗi
     return " ".join(result)
 
@@ -224,7 +225,7 @@ def response(sentence):
     if len(top_sent) > 1:
         output = random.choice(top_sent)
     else:
-        output = top_sent
+        output = "xin lỗi tôi là máy nên chưa nhận thức được câu hỏi vui lòng cung cấp câu hỏi chi tiết hơn "
 
     return output
 
@@ -320,10 +321,13 @@ def functionPython(input_text, data):
             addData(datanew)
             newDataFilter = dataFilter
         if valueFilter["brands"] != []:
+            dataFilter = []
             for brand in valueFilter["brands"]:
                 datanew = dataProducts.find({"records.brand.name": brand})
                 addData(datanew)
             newDataFilter = dataFilter
+            for may in newDataFilter:
+                print(may["records"]["name"])
         # Extra
         if valueFilter["extra"] != []:
             for extraf in valueFilter["extra"]:
@@ -396,6 +400,118 @@ def functionPython(input_text, data):
         result = response(preprocess(sent))
         result = result.replace("_", " ")
         result = result.replace("<s>", "")
+        return result
+    if input_text == "getorder":
+        userid = data
+        userid = userid.strip().strip('"')
+        objid = ObjectId(userid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        orderCol = mydb["orders"]
+        dataOrder = orderCol.find({"userId": userid})
+        data = []
+        for doc in dataOrder:
+            order = {
+                "_id": convert_to_json_serializable(doc["_id"]),
+                "userId": doc["userId"],
+                "name": doc["name"],
+                "phone": doc["phone"],
+                "diachi": doc["diachi"],
+                "namesp": doc["namesp"],
+                "masp": doc["masp"],
+                "image": doc["image"],
+                "tinhtrang": doc["tinhtrang"],
+                "date": doc["date"],
+                "soluong": doc["soluong"],
+                "gia": doc["gia"],
+            }
+            data.append(order)
+        result = json.dumps(data)
+        return result
+    if input_text == "getcart":
+        userid = data
+        userid = userid.strip().strip('"')
+        objid = ObjectId(userid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        cartCol = mydb["carts"]
+        dataCart = cartCol.find({"userId": userid})
+        data = []
+        for doc in dataCart:
+            cart = {
+                "_id": convert_to_json_serializable(doc["_id"]),
+                "userId": doc["userId"],
+                "namesp": doc["namesp"],
+                "masp": doc["masp"],
+                "image": doc["image"],
+                "soluong": doc["soluong"],
+                "gia": doc["gia"],
+            }
+            data.append(cart)
+        result = json.dumps(data)
+        return result
+    if input_text == "removecart":
+        cartid = data
+        cartid = cartid.strip().strip('"')
+        objid = ObjectId(cartid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        cartCol = mydb["carts"]
+        query = cartCol.delete_one({"_id": objid})
+        return "xóa thành công"
+    if input_text == "upamount":
+        cartid = data
+        cartid = cartid.strip().strip('"')
+        objid = ObjectId(cartid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        cartCol = mydb["carts"]
+        query = cartCol.find({"_id": objid})
+        soluong = query[0]["soluong"] + 1
+        changeAmount = cartCol.update_one(
+            {"_id": objid}, {"$set": {"soluong": soluong}}
+        )
+        result = "cập nhật thành công"
+        return result
+    if input_text == "downamount":
+        cartid = data
+        cartid = cartid.strip().strip('"')
+        objid = ObjectId(cartid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        cartCol = mydb["carts"]
+        query = cartCol.find({"_id": objid})
+        soluong = query[0]["soluong"] - 1
+        if soluong == 0:
+            query = cartCol.delete_one({"_id": objid})
+            result = "xóa sản phẩm khỏi giỏ hàng"
+        else:
+            changeAmount = cartCol.update_one(
+                {"_id": objid}, {"$set": {"soluong": soluong}}
+            )
+            result = "cập nhật thành công"
+        return result
+    if input_text == "addcart":
+        productid, userid = data.split(",")
+        productid = productid.strip().strip('"')
+        objproductid = ObjectId(productid)
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        cartCol = mydb["carts"]
+        productCol = mydb["products"]
+        productFind = productCol.find({"_id": objproductid})
+        product = productFind[0]
+        cartCol.insert_one(
+            {
+                "userId": userid,
+                "namesp": product["records"]["name"],
+                "masp": productid,
+                "image": product["records"]["image"],
+                "soluong": 1,
+                "gia": product["records"]["offers"]["lowPrice"],
+            }
+        )
+        result = "thành công"
         return result
 
 

@@ -69,8 +69,11 @@ const HomePage = () => {
   const [dataApi, setDataApi] = useState("");
   const [dataProducts, setDataProducts] = useState("");
   const [showLog, setShowLog] = useState(true);
+  const [showChat, setShowChat] = useState(true);
+
   let userId = "";
   userId = localStorage.getItem("userId");
+
   const [dataUser, setDataUser] = useState("");
   const handleResetFilter = () => {
     const filterValues = document.querySelectorAll(".checkbox-item .active");
@@ -128,11 +131,25 @@ const HomePage = () => {
       }
       const response = await res.json();
       response ? setDataProducts(response.result) : console.log("empty");
+      localStorage.setItem("dataProducts", JSON.stringify(dataProducts));
     } catch {
       console.error(" There was a problem with the fetch operation:");
     }
   };
-
+  const addCart = (idproduct) => {
+    try {
+      const res = fetch(
+        `http://127.0.0.1:5000/execute_python_function?input=addcart&data=${`${idproduct},${dataUser["_id"]}`}`
+      );
+      if (!res.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const response = res.json();
+      console.log(response);
+    } catch {
+      console.error(" There was a problem with the fetch operation:");
+    }
+  };
   const handleClickBrand = (e) => {
     const brandItem = e.target.querySelector("p");
     brandItem.classList.toggle("active");
@@ -156,20 +173,27 @@ const HomePage = () => {
     }
   };
   // fetchDataFilter();
+
   useEffect(() => {
-    if (userId != "") {
+    const btnClose = document.querySelector("#btn-close-chat");
+    btnClose.addEventListener("click", () => {
+      setShowChat(false);
+    });
+    if (userId && userId != "") {
       setShowLog(false);
       fetchUserData();
     }
+    // const intervalUser = setInterval(fetchData, 1000);
     const intervalId = setInterval(fetchData, 1000);
     const intervalShowslide = setInterval(() => {
       setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 4000);
     return () => {
       clearInterval(intervalId);
+      // clearInterval(intervalUser);
       clearInterval(intervalShowslide);
     };
-  }, [input, dataProducts, userId]);
+  }, [input, dataProducts, dataUser]);
 
   const [showFilterExtra, setShowFilterExtra] = useState(false);
   const handleToggleShow = () => {
@@ -269,7 +293,7 @@ const HomePage = () => {
               />
               <i className="fa-solid fa-magnifying-glass my-auto text-main-clo"></i>
             </div>
-            <ul className="navbar flex gap-3 items-center">
+            <ul className="navbar flex gap-4 items-center">
               <li className="nav-item">
                 <NavLink to="/order_status" className="nav-item">
                   Tình trạng đơn
@@ -280,10 +304,13 @@ const HomePage = () => {
                   Giỏ hàng
                 </NavLink>
               </li>
-              <li className="nav-item">
-                <NavLink to="/messages" className="nav-item">
-                  Chat với shop
-                </NavLink>
+              <li
+                className="nav-item cursor-pointer"
+                onClick={() => {
+                  setShowChat(true);
+                }}
+              >
+                Chat với shop
               </li>
               {showLog ? (
                 <>
@@ -399,10 +426,13 @@ const HomePage = () => {
                           );
                         } else {
                           const price =
-                            item.records.offers.price.toLocaleString("it-IT", {
-                              style: "currency",
-                              currency: "VND",
-                            });
+                            item.records.offers.lowPrice.toLocaleString(
+                              "it-IT",
+                              {
+                                style: "currency",
+                                currency: "VND",
+                              }
+                            );
                           return <p className="lowprice">{price}</p>;
                         }
                       };
@@ -433,15 +463,31 @@ const HomePage = () => {
                               <div className="px-3 py-1 text-[18px]">
                                 {handleShowPrice()}
                               </div>
-                              <div className="button-box p-0 py-2 flex gap-3">
-                                <Button
-                                  className="w-full  bg-main-clo hover:bg-[#3a6fbd] text-list-clo font-bold"
-                                  text="Đặt Hàng"
-                                ></Button>
-                                <Button
-                                  className="w-full  bg-gray-clo hover:bg-[#9e9797] text-list-clo font-bold"
-                                  text="Chi Tiết"
-                                ></Button>
+                              <div className="button-box p-0 py-1 flex justify-between gap-1">
+                                <NavLink className="w-full">
+                                  <Button
+                                    className="w-full bg-main-clo hover:bg-[#3a6fbd] text-list-clo font-bold"
+                                    text="Đặt Hàng"
+                                  ></Button>
+                                </NavLink>
+                                <NavLink
+                                  to={"/detail_product"}
+                                  state={item}
+                                  className="w-full"
+                                >
+                                  <Button
+                                    className="w-full  bg-gray-clo hover:bg-[#9e9797] text-list-clo font-bold"
+                                    text="Chi Tiết"
+                                  ></Button>
+                                </NavLink>
+                                <button
+                                  className="text-[16px] min-w-[20px]  bg-main-clo hover:bg-[#3a6fbd] text-list-clo font-bold"
+                                  onClick={() => {
+                                    addCart(item._id);
+                                  }}
+                                >
+                                  <i className="fa-solid fa-plus"></i>
+                                </button>
                               </div>
                             </div>
                           </div>
@@ -570,7 +616,7 @@ const HomePage = () => {
         </div>
       </div>
       <div className="popup-chatbot fixed z-[999] bottom-10 right-[35px]">
-        <ChatPage></ChatPage>
+        <ChatPage show={showChat}></ChatPage>
       </div>
     </>
   );

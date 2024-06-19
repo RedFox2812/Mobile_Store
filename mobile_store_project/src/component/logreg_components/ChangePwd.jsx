@@ -44,8 +44,26 @@ export default function ChangePwd() {
         className="max-w-[450px] mx-auto my-40"
       >
         <p className="text-center text-3xl py-8">DDA MOBILESTORE</p>
-        <div className="flex flex-col gap-3  ">
+        <div className="flex flex-col gap-3 text-left ">
           {/* present pwd */}
+          <label
+            htmlFor="email"
+            className="cursor-pointer font-semibold text-xl "
+          >
+            Email
+          </label>
+          <Inputbox
+            name="email"
+            placeholder="Nhập email"
+            id="email"
+            control={control}
+            type="text"
+          ></Inputbox>
+          {errors.email && (
+            <span className="color: text-red-500 text-sm ">
+              {errors.email.message}
+            </span>
+          )}
           <label
             htmlFor="prepwd"
             className="cursor-pointer font-semibold text-xl"

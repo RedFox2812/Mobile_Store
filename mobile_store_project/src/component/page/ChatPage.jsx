@@ -1,8 +1,9 @@
+/* eslint-disable react/prop-types */
 // import React, { useEffect } from "react";
 
 import { useEffect } from "react";
-
-const ChatPage = () => {
+import setShowChat from "../page/HomePage";
+const ChatPage = (props) => {
   function sendMessage() {
     const chatBody = document.getElementById("chat-body");
     const chatInput = document.getElementById("chat-input");
@@ -11,6 +12,7 @@ const ChatPage = () => {
     userMessage.classList.add("chat-message", "user");
     userMessage.textContent = message;
     chatBody.appendChild(userMessage);
+
     if (message) {
       fetch(
         `http://127.0.0.1:5000/execute_python_function?input=chatbot&data=${message}`
@@ -50,27 +52,35 @@ const ChatPage = () => {
   }, []);
 
   return (
-    <div className="chat-container">
-      <div className="chat-header">
-        <p>Chat Tư Vấn</p>
-        <i className="fa-solid fa-x"></i>
-      </div>
-      <div className="chat-body" id="chat-body">
-        <div className="chat-message bot">
-          DDA Store: Xin chào, tôi là bot chat của DDA Store
+    <>
+      <div className={`chat-container ${props.show ? "" : "hidden"}`}>
+        <div className="chat-header">
+          <p>Chat Tư Vấn</p>
+          <i
+            className="fa-solid fa-x"
+            id="btn-close-chat"
+            onClick={() => {
+              setShowChat(false);
+            }}
+          ></i>
+        </div>
+        <div className="chat-body" id="chat-body">
+          <div className="chat-message bot">
+            DDA Store: Xin chào, tôi là bot chat của DDA Store
+          </div>
+        </div>
+        <div className="chat-footer">
+          <input type="text" id="chat-input" placeholder="Type a message..." />
+          <button
+            onClick={() => {
+              sendMessage();
+            }}
+          >
+            Send
+          </button>
         </div>
       </div>
-      <div className="chat-footer">
-        <input type="text" id="chat-input" placeholder="Type a message..." />
-        <button
-          onClick={() => {
-            sendMessage();
-          }}
-        >
-          Send
-        </button>
-      </div>
-    </div>
+    </>
   );
 };
 

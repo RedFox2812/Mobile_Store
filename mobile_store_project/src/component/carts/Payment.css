@@ -1,0 +1,93 @@
+/*
+=============== 
+Variables
+===============
+*/
+
+:root {
+  --transition: all 0.3s linear;
+  --spacing: 0.25rem;
+  --radius: 0.25rem;
+  --large-screen-width: 1170px;
+  --small-screen-width: 90vw;
+  --fixed-width: 50rem;
+}
+/* 
+===========================
+InfoPage
+===========================
+*/
+
+/* ========================== Đặt hàng ========================== */
+*/ .chitietsp {
+  display: flex;
+  justify-content: space-between;
+}
+
+.khuyenmai {
+  display: flex;
+  font-size: 100;
+  color: var(--main-color);
+  margin-left: 10px;
+  flex-direction: column;
+}
+
+.khuyenmai-list {
+  color: #000;
+  border: 2px solid;
+  border-radius: 0 0 4px 4px;
+  border-color: var(--red-color);
+  padding: 4px 10px;
+  margin-left: 10px;
+  max-width: 1180px;
+}
+.thanhtoan-cart {
+  margin-top: 20px;
+  margin: 20px auto;
+  height: 100%;
+  max-width: 1200px;
+  /* width: 100%; */
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.nhanhang {
+  margin: 30px 0;
+}
+.nhanhang p {
+  font-size: large;
+  font-weight: 500;
+}
+.nhanhang-title {
+  display: flex;
+  justify-content: space-between;
+}
+.nhanhang-choose {
+  display: flex;
+}
+
+.info-khachdathang {
+  display: flex;
+  flex-direction: column;
+  max-width: 1180px;
+  justify-content: center;
+}
+
+.info-permit input {
+  border-radius: 12px;
+  border: 1px solid var(--main-color);
+  margin-top: 10px;
+}
+
+.thongtin-thanhtoan {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+.thongtin {
+  color: var(--clr-grey-5);
+}
+
+.giatien {
+  text-align: right;
+}
