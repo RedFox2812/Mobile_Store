@@ -16,5 +16,5 @@ export default {
     },
     font: {},
   },
-  plugins: [],
+  plugins: [require("tailwindcss-textshadow")],
 };

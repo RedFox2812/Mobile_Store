@@ -1,4 +1,6 @@
 import nltk
+
+nltk.download("punkt")  # Lần đầu chạy file huấn luyện
 from nltk.stem.lancaster import LancasterStemmer
 from pyvi import ViTokenizer, ViPosTagger
 import regex
@@ -28,7 +30,6 @@ with open(
     stopwords = _fp.readlines()
     for i in range(len(stopwords)):
         stopwords[i] = stopwords[i].replace("\n", "")
-    # print(stopwords)
 
 
 def remove_stopwords(line):
@@ -116,7 +117,6 @@ def idf(docs, words):
 
 
 def tf_idf(doc, words, idf):
-    # count so lan xuất hiện của từ
     tf_idf_matrix = []
     tf_matrix = tf(doc.split(), words)
     for i in range(len(tf_matrix)):
@@ -125,14 +125,11 @@ def tf_idf(doc, words, idf):
     return tf_idf_matrix
 
 
-# ---------------------------------------------------------------------------------------------------------
-# trích xuất bộ từ vựng dùng phân loại
-
 words = []
 classes = []
 documents = []
 documents_idf = []
-# data = []
+
 for item in intents.find():
     # thêm code tiền xử lý
     question = preprocess(item["question"])
@@ -144,13 +141,12 @@ for item in intents.find():
         classes.append(item["tag"])
 words = sorted(list(set(words)))
 classes = sorted(list(set(classes)))
-# print(words)
-#  tạo dữ liệu tranning
+# tạo dữ liệu tranning
 output = []
 output_empty = [0] * len(classes)
 training = []
 idf_arr = idf(documents_idf, words)
-# # # tập huấn luyện, tf-idf cho mỗi câu
+# tập huấn luyện, tf-idf cho mỗi câu
 for doc in documents:
     tf_idf_matrix = tf_idf(doc[0], words, idf_arr)
     # đầu ra là '0' cho mỗi thẻ và '1' cho thẻ hiện tại
@@ -163,9 +159,8 @@ training = np.array(training, dtype=object)
 train_x = list(training[:, 0])
 train_y = list(training[:, 1])
 
-# print(train_x)
-# print(train_y)
-# Build neural network
+
+# Xây dựng mạng nơ-ron
 net = tflearn.input_data(shape=[None, len(train_x[0])])
 net = tflearn.fully_connected(net, 8)
 net = tflearn.fully_connected(net, len(train_y[0]), activation="softmax")
@@ -174,10 +169,11 @@ net = tflearn.regression(net, optimizer="adam", loss="categorical_crossentropy")
 
 model = tflearn.DNN(net, tensorboard_dir="tflearn_logs")
 
-# Start training
+# bắt đầu huấn luyện
 
 # model.fit(train_x, train_y, n_epoch=500, batch_size=3, show_metric=True)
 # model.save("mobile_store_project/backend//model.tflearn")
+
 pickle.dump(
     {
         "words": words,

@@ -179,9 +179,11 @@ const HomePage = () => {
     btnClose.addEventListener("click", () => {
       setShowChat(false);
     });
-    if (userId && userId != "") {
+    if (userId && userId != "" && userId != "66bc2824a721eb07fce98545") {
       setShowLog(false);
       fetchUserData();
+    } else if (userId == "66bc2824a721eb07fce98545") {
+      window.location = "/admin";
     }
     // const intervalUser = setInterval(fetchData, 1000);
     const intervalId = setInterval(fetchData, 1000);
@@ -300,7 +302,7 @@ const HomePage = () => {
                 </NavLink>
               </li>
               <li className="nav-item">
-                <NavLink to="/Cart" className="nav-item">
+                <NavLink to="/cart" className="nav-item">
                   Giỏ hàng
                 </NavLink>
               </li>

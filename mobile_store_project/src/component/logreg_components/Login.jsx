@@ -31,9 +31,7 @@ function Login() {
     setLogData(log_data);
   };
   useEffect(() => {
-    if (userId != "") {
-      window.location.href = "/";
-    }
+    // console.log(userId);
     if (logData != "empty") {
       fetch(
         `http://127.0.0.1:5000/execute_python_function?input=login&data=${logData}`
@@ -46,8 +44,7 @@ function Login() {
         })
         .then((data) => {
           const userId = data["result"];
-          console.log(userId);
-          if (userId != "null") {
+          if (userId != "null" && userId != "") {
             localStorage.setItem("userId", userId);
             window.location.href = "/";
           } else {

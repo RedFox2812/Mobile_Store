@@ -15,6 +15,9 @@ import UserPage from "./component/page/UserPage";
 import ChatPage from "./component/page/ChatPage";
 import DetailProduct from "./component/detail_product/DetailProduct";
 import Payment from "./component/carts/Payment";
+import AdminPage from "./component/admin/AdminPage";
+import DetailProductAdmin from "./component/detail_product/DetailProductAdmin";
+import DetailOrderAdmin from "./component/detail_order/DetailOrderAdmin";
 function App() {
   return (
     <Routes>
@@ -32,6 +35,12 @@ function App() {
       <Route path="/user-info" element={<UserPage />}></Route>
       <Route path="/detail_product" element={<DetailProduct />}></Route>
       <Route path="/cart/payment" element={<Payment />}></Route>
+      <Route path="/admin" element={<AdminPage />}></Route>
+      <Route
+        path="/admin/detail_product"
+        element={<DetailProductAdmin />}
+      ></Route>
+      <Route path="/admin/detail_order" element={<DetailOrderAdmin />}></Route>
     </Routes>
   );
 }

@@ -145,7 +145,7 @@ def toprank(sents, consine_arr, num=3):
     return top
 
 
-# hàm tạo câu mới
+# # hàm tạo câu mới
 def response(sentence):
     label = classify(sentence)
     print(label)
@@ -384,7 +384,7 @@ def functionPython(input_text, data):
         return result
     if input_text == "getUserList":
         client = MongoClient(uri, server_api=ServerApi("1"))
-        mydb = client["User"]
+        mydb = client["mobile_store"]
         mycol = mydb["users"]
         docs = mycol.find()
         dataUser = []
@@ -398,8 +398,9 @@ def functionPython(input_text, data):
         print(sent)
         result = "false"
         result = response(preprocess(sent))
-        result = result.replace("_", " ")
-        result = result.replace("<s>", "")
+        if result and result != "false":
+            result = result.replace("_", " ")
+            result = result.replace("<s>", "")
         return result
     if input_text == "getorder":
         userid = data
@@ -409,6 +410,30 @@ def functionPython(input_text, data):
         mydb = client["mobile_store"]
         orderCol = mydb["orders"]
         dataOrder = orderCol.find({"userId": userid})
+        data = []
+        for doc in dataOrder:
+            order = {
+                "_id": convert_to_json_serializable(doc["_id"]),
+                "userId": doc["userId"],
+                "name": doc["name"],
+                "phone": doc["phone"],
+                "diachi": doc["diachi"],
+                "namesp": doc["namesp"],
+                "masp": doc["masp"],
+                "image": doc["image"],
+                "tinhtrang": doc["tinhtrang"],
+                "date": doc["date"],
+                "soluong": doc["soluong"],
+                "gia": doc["gia"],
+            }
+            data.append(order)
+        result = json.dumps(data)
+        return result
+    if input_text == "getOrderList":
+        client = MongoClient(uri, server_api=ServerApi("1"))
+        mydb = client["mobile_store"]
+        orderCol = mydb["orders"]
+        dataOrder = orderCol.find()
         data = []
         for doc in dataOrder:
             order = {

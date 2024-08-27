@@ -85,6 +85,29 @@ span {
   height: 100%;
   left: 0;
 }
+
+table thead tr th {
+  text-align: center;
+  color: var(--white-color);
+}
+table thead tr:nth-child(even) {
+  background-color: var(--bg-color);
+}
+table thead tr:nth-child(odd) {
+  background-color: var(--main-color);
+}
+
+table tbody tr th {
+  text-align: center;
+  color: var(--text-color);
+}
+table thead tr:nth-child(even) {
+  background-color: var(--bg-color);
+}
+table thead tr:nth-child(odd) {
+  background-color: var(--main-color);
+}
+
 .container--left .container--left__extra {
   font-size: 22px;
   font-weight: 600;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-const-assign */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react/prop-types */
@@ -7,12 +8,16 @@ import { useEffect, useState } from "react";
 import ButtonExtra from "../elements/ButtonExtra";
 import Button from "../elements/Button";
 import Dropdown from "../elements/Dropdown";
+import { data } from "autoprefixer";
+let userId = "";
+userId = localStorage.getItem("userId");
 const AdminPage = () => {
   const arrayIcon = {
     setting: "src/assets/icon/setting_hover_icon.png",
     bell: "src/assets/icon/bell_hover_icon.png",
   };
   const [show, setShow] = useState("user");
+
   function handleToggleClass(e, str) {
     const selected = document.querySelector(`.${str}`);
     selected ? selected.classList.remove(str) : e.target.classList.add(str);
@@ -23,7 +28,7 @@ const AdminPage = () => {
   const fetchData = async () => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=${input}`
+        `http://127.0.0.1:5000/execute_python_function?input=${input}&data=""`
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -48,238 +53,251 @@ const AdminPage = () => {
       if (e.target.classList.contains("button-icon")) {
         handleToggleClass(e, "selected-icon");
       }
-      if (e.target.classList.contains("User")) {
+      if (e.target.classList.contains("user")) {
+        setData("");
         setInput("getUserList");
         setShow("user");
-      } else if (e.target.classList.contains("Product")) {
+      } else if (e.target.classList.contains("product")) {
+        setData("");
         setInput("getProductList");
         setShow("product");
-      } else if (e.target.classList.contains("Voucher")) {
-        setShow("voucher");
+      } else if (e.target.classList.contains("order")) {
+        setData("");
+        setInput("getOrderList");
+        setShow("order");
       } else if (e.target.classList.contains("setting")) {
         setShow("setting");
       } else if (e.target.classList.contains("noti")) {
-        setShow("");
+        setShow("noti");
       }
     });
     return () => clearInterval(intervalId);
   }, [show, input]);
-  console.log(data["result"]);
+  // console.log(data["result"]);
   return (
-    <div className="Admin-page w-full ">
+    <div className="Admin-page">
       <HeaderAdmin icon={arrayIcon}></HeaderAdmin>
-      {show == "user" ? (
-        <UserManager data={data}></UserManager>
-      ) : show == "product" ? (
-        <ProductManager></ProductManager>
-      ) : show == "voucher" ? (
-        <VoucherManager></VoucherManager>
-      ) : show == "setting" ? (
-        <Setting></Setting>
-      ) : show == "noti" ? (
-        <Noti></Noti>
-      ) : (
-        ""
-      )}
+      <BodyAdmin dataTable={data} show={show}></BodyAdmin>
     </div>
   );
 };
 const HeaderAdmin = (props) => {
-  const items = ["User", "Product", "Voucher"];
-  return (
-    <div className="container-header fixed h-[100px] w-full z-50">
-      <div className="w-full h-auto flex  justify-between bg-[#fff] rounded-t-md">
-        <div className=" left-bar h-full flex items-center ">
-          <p className=" h-full p-[16px]  mr-[100px] text-text-clo text-[24px] font-medium cursor-default ">
-            Admin Manager
-          </p>
-          <ul className=" h-full flex gap-10 text-[20px] font-medium text-gray-clo">
-            {items.map((item) => {
-              return (
-                <li
-                  key={items.indexOf(item)}
-                  className={`select-item h-full relative p-[20px] cursor-pointer hover:text-text-clo ${
-                    item == "User" ? "selected" : ""
-                  } ${item}`}
-                >
-                  {item}
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className="right-bar flex gap-3 px-[16px] items-center">
-          <ButtonExtra
-            srcIcon={props.icon.bell}
-            className="noti button-icon relative flex select-item"
-            size="24"
-          ></ButtonExtra>
-          <ButtonExtra
-            srcIcon={props.icon.setting}
-            size="24"
-            className="setting button-icon relative flex select-item"
-          ></ButtonExtra>
-          <div className="w-[40px] border border-main-clo rounded-full p-2 cursor-pointer">
-            <img src="src\assets\avata.png" alt="" />
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-const UserManager = (props) => {
-  // console.log(props.usersData);
-  const data = props.data ? props.data["result"] : "";
-  const dataJson = data ? JSON.parse(data) : "";
-  let num = 0;
-  const arrayCol = {
-    SNo: "S.No",
-    _id: "ID",
-    name: "Name",
-    phone: "Number Phone",
-    address: "Address",
-    email: "Email",
-  };
-
-  return (
-    <div>
-      <div className="search-filter fixed w-full h-[55px] top-[70px] flex justify-around items-center bg-[#fff] z-40">
-        <div className="search flex-[calc(8/9)]">
-          <div className="w-[99%] p-1 m-auto  flex justify-between border border-main-clo text-center items-center rounded-full">
-            <img
-              className="w-[16px] h-[16px] mx-[20px]"
-              src="src\assets\icon\search_icon.png"
-              alt=""
-            />
-            <div
-              className="w-full flex justify-between text-[18px] font-medium border-l-2 border-l-main-clo"
-              onClick={(e) => {
-                e.target.value = "";
-              }}
-            >
-              <input
-                className="w-full pl-3 outline-none text-gray-clo"
-                defaultValue={"Input your text..."}
-              />
-              <Button text="Search" className="px-[10px]"></Button>
-            </div>
-          </div>
-        </div>
-        <Dropdown
-          items={["Cần Thơ", "Hồ Chí Minh", "Đà Nẵng"]}
-          className="flex-[calc(1/9)] h-[70%] mx-3 text-[20px] items-center rounded-full"
-        ></Dropdown>
-      </div>
-      <div className="flex">
-        <div
-          className={`board w-full mt-[65px] gap-1 bg-[#fff] overflow-y-scroll `}
-        >
-          <div>
-            <UserInfo
-              className="text-left w-full flex mt-[60px] px-7 py-4 gap-2 border-t-[4px] border-b-[4px] bg-[#fff] text-[16px] font-medium text-gray-clo border-backgruond-clo"
-              col={arrayCol}
-              SNo={arrayCol.SNo}
-              delete="none"
-            ></UserInfo>
-            {dataJson ? (
-              dataJson.map((item) => {
-                // console.log(item);
-                num = num + 1;
-                return (
-                  <UserInfo
-                    key={item._id}
-                    col={item}
-                    SNo={num}
-                    className={`${
-                      num % 2 == 0 ? "" : "bg-list-clo"
-                    } text-left w-full flex px-7 py-4 gap-2 text-[16px] font-medium my-[2px] text-text-clo border-b-[4px] border-backgruond-clo`}
-                  ></UserInfo>
-                );
-              })
-            ) : (
-              <div className="loading mx-auto my-3 w-[35px] h-[35px] border-[6px] border-main-clo border-r-[transparent] rounded-full bg-hover-clo"></div>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-};
-const UserInfo = (props) => {
-  return (
-    <div className={props.className}>
-      <div className="flex-[calc(1/17)] border-r-[2px] border-r-gray-clo">
-        {props.SNo}
-      </div>
-      <div className="flex-[calc(2/17)] border-r-[2px] border-r-gray-clo pr-2 max-w-[100px] overflow-hidden">
-        {props.col._id.substring(0, 8)}
-      </div>
-      <div className="flex-[calc(2/17)] border-r-[2px] border-r-gray-clo">
-        {props.col.name}
-      </div>
-      <div className="flex-[calc(3/17)] border-r-[2px] border-r-gray-clo">
-        {props.col.phone}
-      </div>
-      <div className="flex-[calc(4/17)] border-r-[2px] border-r-gray-clo">
-        {props.col.address}
-      </div>
-      <div className="flex-[calc(4/17)] ">{props.col.email}</div>
-      <div className="detele-user flex-[calc(1/17)]">
-        {props.delete == "none" ? (
-          <div className="delete button-icon relative w-[26px]"></div>
-        ) : (
-          <div className="delete-btn">
-            <ButtonExtra
-              srcIcon={"src/assets/icon/recycle_bin_icon.png"}
-              className="delete button-icon relative select-item"
-              size="26"
-            ></ButtonExtra>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
-const ProductManager = (props) => {
+  const items = ["Người dùng", "Sản phẩm", "Đơn đặt hàng"];
   return (
     <>
-      <div className="search-filter fixed w-full h-[55px] top-[70px] flex justify-around items-center bg-[#fff] z-40">
-        <div className="search flex-[calc(8/9)]">
-          <div className="w-[99%] p-1 m-auto  flex justify-between border border-main-clo text-center items-center rounded-full">
-            <img
-              className="w-[16px] h-[16px] mx-[20px]"
-              src="src\assets\icon\search_icon.png"
-              alt=""
-            />
-            <div
-              className="w-full flex justify-between text-[18px] font-medium border-l-2 border-l-main-clo"
-              onClick={(e) => {
-                e.target.value = "";
+      <div className="container-header">
+        <div className="w-[1230px] mx-auto h-auto flex  justify-between bg-[#fff] rounded-t-md">
+          <div className=" left-bar h-full flex items-center ">
+            <p className=" h-full p-[16px]  mr-[100px] text-main-clo text-[30px] font-bold cursor-default text-shadow-sm">
+              Admin Manager
+            </p>
+            <ul className=" h-full flex gap-10 text-[20px] font-medium text-gray-clo">
+              {items.map((item) => {
+                return (
+                  <li
+                    key={items.indexOf(item)}
+                    className={`select-item h-full relative p-[10px] cursor-pointer hover:text-text-clo ${
+                      item == "Người dùng" ? "selected" : ""
+                    } ${
+                      item == "Người dùng"
+                        ? "user"
+                        : item == "Sản phẩm"
+                        ? "product"
+                        : item == "Đơn đặt hàng"
+                        ? "order"
+                        : ""
+                    }`}
+                  >
+                    {item}
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="right-bar flex gap-3 px-[16px] items-center">
+            <ButtonExtra
+              srcIcon={props.icon.bell}
+              className="noti button-icon relative flex select-item"
+              size="24"
+            ></ButtonExtra>
+            <ButtonExtra
+              srcIcon={props.icon.setting}
+              size="24"
+              className="setting button-icon relative flex select-item"
+            ></ButtonExtra>
+            <Button
+              onClick={() => {
+                localStorage.setItem("userId", "");
+                localStorage.setItem("dataUser", "");
+                userId = "";
+                window.location.href = "/";
               }}
-            >
-              <input
-                className="w-full pl-3 outline-none text-gray-clo"
-                defaultValue={"Input your text..."}
-              />
-              <Button text="Search" className="px-[10px]"></Button>
+              text="Đăng xuất"
+              className="py-1 px-3 border border-gray-clo text-gray-clo bg-[#fff] font-semibold rounded-sm hover:text-red-clo hover:border-red-clo"
+            ></Button>
+            <div className="w-[40px] border border-main-clo rounded-full p-2 cursor-pointer">
+              <img src="src\assets\avata.png" alt="" />
             </div>
           </div>
-        </div>
-        <div className="flex gap-3 flex-[calc(1/9)] justify-center">
-          <ButtonExtra
-            srcIcon={"src/assets/icon/filter_icon.png"}
-            text="Filter"
-            size="24"
-            className="filter button-filter relative py-[4px] border-1 border-gray-clo opacity-50 hover:opacity-[1]"
-          ></ButtonExtra>
         </div>
       </div>
     </>
   );
 };
-const VoucherManager = (props) => {};
-const Setting = (props) => {};
-const Noti = (props) => {};
-const Filter = (props) => {};
+const BodyAdmin = (props) => {
+  const show = props.show;
+  let dataTable = "";
+  if (show != "product") {
+    dataTable = props.dataTable["result"]
+      ? JSON.parse(props.dataTable["result"])
+      : "";
+  } else {
+    dataTable = props.dataTable["result"];
+  }
+
+  return (
+    <>
+      <div className="container-body my-8">
+        {dataTable ? (
+          <div className="w-[1230px] mx-auto">
+            {show == "user" ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>ID</th>
+                    <th>HỌ VÀ TÊN</th>
+                    <th>SĐT</th>
+                    <th>EMAIL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataTable.map((item) => {
+                    return (
+                      <tr key={item._id}>
+                        <th>{item.id}</th>
+                        <th>{item._id}</th>
+                        <th>{item.name}</th>
+                        <th>{item.phone}</th>
+                        <th>{item.email}</th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : show == "product" ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>ID</th>
+                    <th>TÊN SẢN PHẨM</th>
+                    <th>GIÁ SẢN PHẨM</th>
+                    <th>SỐ LƯỢNG</th>
+                    <th>CHI TIẾT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataTable.map((item) => {
+                    return (
+                      <tr key={item._id} id={item._id}>
+                        <th>{item.id}</th>
+                        <th>{item._id}</th>
+                        <th className="text-left">{item.records.name}</th>
+                        <th>
+                          {item.records.offers.lowPrice.toLocaleString(
+                            "it-IT",
+                            {
+                              style: "currency",
+                              currency: "VND",
+                            }
+                          )}
+                        </th>
+                        <th>{item.soluong}</th>
+                        <th>
+                          <i
+                            onClick={(e) => {
+                              const idProduct =
+                                e.target.parentNode.parentNode.id;
+                              console.log(idProduct);
+                              dataTable.map((item) => {
+                                if (item._id == idProduct) {
+                                  console.log(item);
+                                  const dataProduct = JSON.stringify(item);
+                                  localStorage.setItem(
+                                    "dataDetailProduct",
+                                    dataProduct
+                                  );
+                                }
+                              });
+                              window.location.href = "/admin/detail_product";
+                            }}
+                            className="fa-solid fa-info p-2 px-4 text-[14px] cursor-pointer text-list-clo bg-gray-clo rounded-full hover:bg-main-clo"
+                          ></i>
+                        </th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : show == "order" ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>ID_donhang</th>
+                    <th>SẢN PHẨM</th>
+                    <th>SĐT</th>
+                    <th>ĐỊA CHỈ</th>
+                    <th>TÌNH TRẠNG</th>
+                    <th>CHI TIẾT</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {dataTable.map((item, index) => {
+                    return (
+                      <tr key={item._id} id={item._id}>
+                        <th>{index + 1}</th>
+                        <th>{item._id}</th>
+                        <th>{item.namesp}</th>
+                        <th>{item.phone}</th>
+                        <th>{item.diachi}</th>
+                        <th>{item.tinhtrang}</th>
+                        <th>
+                          <i
+                            onClick={(e) => {
+                              const idOrder = e.target.parentNode.parentNode.id;
+                              console.log(idOrder);
+                              dataTable.map((item) => {
+                                if (item._id == idOrder) {
+                                  console.log(item);
+                                  const dataOrder = JSON.stringify(item);
+                                  localStorage.setItem(
+                                    "dataDetailOrder",
+                                    dataOrder
+                                  );
+                                }
+                              });
+                              window.location.href = "/admin/detail_order";
+                            }}
+                            className="detail-order fa-solid fa-info p-2 px-4 text-[14px] cursor-pointer text-list-clo bg-gray-clo rounded-full hover:bg-main-clo"
+                          ></i>
+                        </th>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            ) : (
+              ""
+            )}
+          </div>
+        ) : (
+          <div className="w-8 h-8 border-4 mx-auto border-main-clo border-r-[transparent] rounded-full animate-spin"></div>
+        )}
+      </div>
+    </>
+  );
+};
 
 export default AdminPage;
