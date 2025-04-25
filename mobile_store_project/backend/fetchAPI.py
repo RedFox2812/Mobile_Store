@@ -8,8 +8,7 @@ from flask_cors import CORS
 uri = "mongodb+srv://lehaiduong:Duong12345@atlascluster.wuubbjn.mongodb.net/?retryWrites=true&w=majority&appName=AtlasCluster"
 # thư viện hổ trợ chatbot
 from collections import defaultdict, Counter
-from model_trainning import tf, tf_idf, preprocess
-from model_trainning import model
+from model_training import tf, tf_idf, preprocess, model
 import pickle
 import numpy as np
 import math
