@@ -25,7 +25,7 @@ intents = database["trains"]
 
 stopword = set()
 with open(
-    "mobile_store_project/backend/chatbot/data/stopwords.txt", "r", encoding="utf-8"
+    "D:/study/DOAN_OLD/Mobile_Store/mobile_store_project/backend/chatbot/data/stopwords.txt", "r", encoding="utf-8"
 ) as _fp:
     stopwords = _fp.readlines()
     for i in range(len(stopwords)):
@@ -172,8 +172,9 @@ model = tflearn.DNN(net, tensorboard_dir="tflearn_logs")
 # bắt đầu huấn luyện
 
 # model.fit(train_x, train_y, n_epoch=500, batch_size=3, show_metric=True)
-# model.save("mobile_store_project/backend//model.tflearn")
+# model.save("D:/study/DOAN_OLD/Mobile_Store/mobile_store_project/backend/model.tflearn")
 
+        
 pickle.dump(
     {
         "words": words,

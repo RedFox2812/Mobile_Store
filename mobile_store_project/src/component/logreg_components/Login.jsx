@@ -16,7 +16,6 @@ const schema = yup.object({
 });
 
 function Login() {
-  const [logData, setLogData] = useState("empty");
   const userId = localStorage.getItem("userId");
   const {
     // register,
@@ -27,35 +26,40 @@ function Login() {
 
   const onSubmitHandler = (values) => {
     if (!isValid) return;
-    const log_data = JSON.stringify(values);
-    setLogData(log_data);
+    submitApi(values);
+  };
+  const submitApi = async (values) => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/execute_python_function/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        },
+      );
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        console.log(data.message);
+        if (res.status === 409) {
+          alert(`status: ${res.status} => ${data.message}`);
+        }
+        return;
+      }
+      localStorage.setItem("token", data.token);
+      // console.log("Login success", data);
+      window.location.href = "/";
+    } catch {
+      console.log("Lỗi Serer", errors);
+    }
   };
   useEffect(() => {
-    // console.log(userId);
-    if (logData != "empty") {
-      fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=login&data=${logData}`
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const userId = data["result"];
-          if (userId != "null" && userId != "") {
-            localStorage.setItem("userId", userId);
-            window.location.href = "/";
-          } else {
-            console.log("error");
-          }
-        })
-        .catch((error) =>
-          console.error("There was a problem with the fetch operation:", error)
-        );
-    }
-  }, [logData]);
+    const token = localStorage.getItem("token");
+    console.log(token);
+  }, []);
   return (
     <div className="fixed top-[20px] left-[calc(50%-250px)] min-h-[600px] bg-white  max-w-[500px] ">
       <div className="my-[10px] mb-[10px] ">
@@ -112,7 +116,7 @@ function Login() {
                 Thay đổi mật khẩu
               </NavLink>
             </div>
-            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-main-clo rounded-lg hover:bg-slate-400 ">
+            <button className="w-full p-5 mt-3 font-semibold text-[white] bg-main rounded-lg hover:bg-slate-400 ">
               Đăng nhập
             </button>
             <div className="flex justify-center pb-4">

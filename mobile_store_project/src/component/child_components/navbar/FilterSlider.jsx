@@ -20,7 +20,11 @@ const FilterSlider = () => {
       setMinPrice(50);
     }
     if (minPrice >= maxPrice) {
-      setMinPrice(Number(maxPrice) - 10);
+      if (Number(maxPrice) - 10 < 0) {
+        setMinPrice(0);
+      } else {
+        setMinPrice(Number(maxPrice) - 10);
+      }
     } else {
       setMaxPrice(e.target.value);
     }

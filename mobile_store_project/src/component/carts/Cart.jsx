@@ -14,9 +14,7 @@ const Cart = () => {
   const removeCart = (id) => {
     console.log(id);
     try {
-      const res = fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=removecart&data=${id}`
-      );
+      const res = fetch(`http://127.0.0.1:5000/execute_python_function/cart`);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
@@ -37,7 +35,7 @@ const Cart = () => {
         const res = fetch(
           `http://127.0.0.1:5000/execute_python_function?input=${
             func == "up" ? "upamount" : "downamount"
-          }&data=${id}`
+          }&data=${id}`,
         );
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -48,21 +46,31 @@ const Cart = () => {
     }
   };
   const fetchData = async () => {
+    const token = localStorage.getItem("token");
+    console.log(token);
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=getcart&data=${dataUser["_id"]}`
+        `http://127.0.0.1:5000/execute_python_function/cart`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
       );
       if (!res.ok) {
-        throw new Error("Network response was not ok");
+        // throw new Error("Network respones was not ok");
+        alert(data.statusText, data.message);
       }
       const response = await res.json();
-      const result = response.result;
-      setDataCart(JSON.parse(result));
+      console.log(response.message);
+      // setDataCart(JSON.parse(result));
       // console.log(dataCart);
     } catch {
       console.error(" There was a problem with the fetch operation:");
     }
   };
+  fetchData();
   useEffect(() => {
     const btnClose = document.querySelector("#btn-close-chat");
     btnClose.addEventListener("click", () => {
@@ -73,7 +81,6 @@ const Cart = () => {
       setShow(true);
       dataUser = JSON.parse(dataUser);
       console.log(dataUser);
-      fetchData();
       setAvata(dataUser["avata"]);
       // console.log(dataUser);
     }
@@ -208,7 +215,7 @@ const Cart = () => {
                                   changeAmount(
                                     e.target.parentNode.parentNode.parentNode
                                       .id,
-                                    "up"
+                                    "up",
                                   );
                                 }}
                               >
@@ -228,7 +235,7 @@ const Cart = () => {
                                   changeAmount(
                                     e.target.parentNode.parentNode.parentNode
                                       .id,
-                                    "down"
+                                    "down",
                                   );
                                 }}
                               >
@@ -255,11 +262,11 @@ const Cart = () => {
                                       checked.parentNode.parentNode.parentNode;
                                     const sl = parseInt(
                                       cartItem.querySelector(".amount")
-                                        .innerHTML
+                                        .innerHTML,
                                     );
                                     let gia =
                                       cartItem.querySelector(
-                                        ".item-price"
+                                        ".item-price",
                                       ).innerHTML;
                                     gia = gia
                                       .replace(/\./g, "")

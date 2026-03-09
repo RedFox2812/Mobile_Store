@@ -36,11 +36,11 @@ function App() {
       <Route path="/detail_product" element={<DetailProduct />}></Route>
       <Route path="/cart/payment" element={<Payment />}></Route>
       <Route path="/admin" element={<AdminPage />}></Route>
-      <Route
+      {/* <Route
         path="/admin/detail_product"
         element={<DetailProductAdmin />}
       ></Route>
-      <Route path="/admin/detail_order" element={<DetailOrderAdmin />}></Route>
+      <Route path="/admin/detail_order" element={<DetailOrderAdmin />}></Route> */}
     </Routes>
   );
 }

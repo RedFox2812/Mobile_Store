@@ -1,9 +1,10 @@
 /* eslint-disable react/prop-types */
 // import React, { useEffect } from "react";
 
-import { useEffect } from "react";
-import setShowChat from "../page/HomePage";
+import { useContext, useEffect } from "react";
+import { ChatContext } from "./ChatContext";
 const ChatPage = (props) => {
+  const { showChat, setShowChat } = useContext(ChatContext);
   function sendMessage() {
     const chatBody = document.getElementById("chat-body");
     const chatInput = document.getElementById("chat-input");
@@ -15,7 +16,7 @@ const ChatPage = (props) => {
 
     if (message) {
       fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=chatbot&data=${message}`
+        `http://127.0.0.1:5000/execute_python_function?input=chatbot&data=${message}`,
       )
         .then((response) => {
           if (!response.ok) {
@@ -37,7 +38,7 @@ const ChatPage = (props) => {
           chatBody.scrollTop = chatBody.scrollHeight;
         })
         .catch((error) =>
-          console.error("There was a problem with the fetch operation:", error)
+          console.error("There was a problem with the fetch operation:", error),
         );
     }
   }

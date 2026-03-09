@@ -1,2 +1,6 @@
 
 .venv/
+venv/
+env/
+backend/.env
+node_modules/

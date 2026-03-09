@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import ButtonExtra from "../elements/ButtonExtra";
 import Button from "../elements/Button";
 import Dropdown from "../elements/Dropdown";
-import { data } from "autoprefixer";
+// import { data } from "autoprefixer";
 let userId = "";
 userId = localStorage.getItem("userId");
 const AdminPage = () => {
@@ -28,7 +28,7 @@ const AdminPage = () => {
   const fetchData = async () => {
     try {
       const res = await fetch(
-        `http://127.0.0.1:5000/execute_python_function?input=${input}&data=""`
+        `http://127.0.0.1:5000/execute_python_function?input=${input}&data=""`,
       );
       if (!res.ok) {
         throw new Error("Network response was not ok");
@@ -38,7 +38,7 @@ const AdminPage = () => {
     } catch {
       console.log.error(
         " There was a problem with the fetch operation:",
-        error
+        error,
       );
     }
   };
@@ -102,10 +102,10 @@ const HeaderAdmin = (props) => {
                       item == "Người dùng"
                         ? "user"
                         : item == "Sản phẩm"
-                        ? "product"
-                        : item == "Đơn đặt hàng"
-                        ? "order"
-                        : ""
+                          ? "product"
+                          : item == "Đơn đặt hàng"
+                            ? "order"
+                            : ""
                     }`}
                   >
                     {item}
@@ -210,7 +210,7 @@ const BodyAdmin = (props) => {
                             {
                               style: "currency",
                               currency: "VND",
-                            }
+                            },
                           )}
                         </th>
                         <th>{item.soluong}</th>
@@ -226,7 +226,7 @@ const BodyAdmin = (props) => {
                                   const dataProduct = JSON.stringify(item);
                                   localStorage.setItem(
                                     "dataDetailProduct",
-                                    dataProduct
+                                    dataProduct,
                                   );
                                 }
                               });
@@ -274,7 +274,7 @@ const BodyAdmin = (props) => {
                                   const dataOrder = JSON.stringify(item);
                                   localStorage.setItem(
                                     "dataDetailOrder",
-                                    dataOrder
+                                    dataOrder,
                                   );
                                 }
                               });

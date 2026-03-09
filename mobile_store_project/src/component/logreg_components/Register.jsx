@@ -1,5 +1,5 @@
 // eslint-disable-next-line no-unused-vars
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import Inputbox from "./Inputbox";
 
@@ -25,13 +25,14 @@ const schema = yup
         {
           message:
             "Mật khẩu phải chứa 1 ký tự viết hoa, 1 số và 1 ký tự đặt biệt",
-        }
+        },
       )
       .required("Password là bắt buộc !"),
   })
   .required();
 
 function Register() {
+  const [regData, setRegData] = useState("empty");
   const {
     // register,
     handleSubmit,
@@ -44,8 +45,47 @@ function Register() {
 
   const onSubmitHandler = (values) => {
     if (!isValid) return;
-    console.log(values);
+    const reg_data = JSON.stringify(values);
+    setRegData(reg_data);
+    if (regData != "empty") {
+      submitApi();
+    }
   };
+
+  const submitApi = async () => {
+    try {
+      const res = await fetch(
+        `http://127.0.0.1:5000/execute_python_function/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: regData,
+        },
+      );
+      const data = await res.json();
+      console.log(data);
+      if (!res.ok) {
+        console.log(data.message);
+        if (res.status === 409) {
+          alert(`status: ${res.status} => ${data.message}`); // Email này đã tồn tại
+        }
+        return;
+      }
+
+      // const userId = data["result"];
+      //     if (userId != "null" && userId != "") {
+      //       localStorage.setItem("userId", userId);
+      //       window.location.href = "/";
+      //     } else {
+      //       console.log("error");
+      //     }
+    } catch {
+      console.log(errors);
+    }
+  };
+
   return (
     /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
     <div className="bg-white max-w-[520px] mx-auto shadow-2xl rounded-3xl relative top-6">
@@ -54,7 +94,7 @@ function Register() {
         autoComplete="off"
         className="w-[100%] mx-auto py-2 px-4"
       >
-        <p className="text-center w-full bg-main-clo text-3xl mt-2 mb-3 p-3 text-white-clo rounded-t-3xl ">
+        <p className="text-center w-full bg-main text-3xl mt-2 mb-3 p-3 text-white rounded-t-3xl ">
           DDA MOBILESTORE
         </p>
         <div className="flex flex-row">
@@ -170,7 +210,7 @@ function Register() {
           </div>
         </div>
         <div className="px-3 ">
-          <button className="w-[100%] p-3 my-2 font-semibold text-[#fff] text-[20px] border border-main-clo bg-main-clo rounded-lg">
+          <button className="w-[100%] p-3 my-2 font-semibold text-[#fff] text-[20px] border border-main bg-main rounded-lg">
             Đăng ký
           </button>
         </div>
